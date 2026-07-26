@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint and behavior tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint and verify the distribution
+        run: npm test
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Check whitespace
+        run: git diff --check
+
+  amp-runtime:
+    name: Latest Amp runtime smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install Amp
+        run: curl -fsSL https://ampcode.com/install.sh | bash
+
+      - name: Load plugin without model calls
+        run: |
+          "$HOME/.amp/bin/amp" plugins exec \
+            plugins/elixir-phoenix.ts \
+            agent.start \
+            --data '{"thread":{"id":"T-00000000-0000-0000-0000-000000000000"},"message":"native load smoke","id":"native-load"}'
+
+  publish-check:
+    name: Verify published raw plugin
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [quality, amp-runtime]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Compare the published artifact
+        env:
+          RAW_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/plugins/elixir-phoenix.ts
+        run: |
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors \
+            "$RAW_URL" | cmp - plugins/elixir-phoenix.ts
