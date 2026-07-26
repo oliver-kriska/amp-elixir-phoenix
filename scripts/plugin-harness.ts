@@ -10,14 +10,13 @@ if (!pluginPath || !skillsPath) {
   throw new Error('usage: plugin-harness.ts <plugin> <skills>')
 }
 const workspace = mkdtempSync(join(tmpdir(), 'amp-elixir-phoenix-'))
-const installedSkill = join(
+const installedSkills = join(
   workspace,
   '.agents',
   'skills',
-  'phx-full',
 )
-mkdirSync(installedSkill, { recursive: true })
-cpSync(resolve(skillsPath, 'phx-full'), installedSkill, { recursive: true })
+mkdirSync(join(workspace, '.agents'), { recursive: true })
+cpSync(resolve(skillsPath), installedSkills, { recursive: true })
 process.on('exit', () => rmSync(workspace, { recursive: true, force: true }))
 
 const { default: plugin } = await import(pathToFileURL(pluginPath).href)

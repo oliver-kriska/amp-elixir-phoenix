@@ -10,8 +10,8 @@ import { parseDocument } from 'yaml'
 const root = resolve(import.meta.dirname, '..')
 const skillsRoot = join(root, 'skills')
 const pluginPath = join(root, 'plugins', 'elixir-phoenix.ts')
-const expectedUpdateURL =
-  'https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts'
+const expectedDistribution =
+  '// Distribution: https://github.com/oliver-kriska/amp-elixir-phoenix\n'
 
 function check(condition, message) {
   if (!condition) throw new Error(message)
@@ -64,9 +64,10 @@ for (const directory of skillDirectories) {
 
 const plugin = readFileSync(pluginPath, 'utf8')
 check(
-  plugin.startsWith(`// @amp-plugin updated automatically from ${expectedUpdateURL}\n`),
-  'plugin auto-update URL does not point at this repository',
+  plugin.startsWith(expectedDistribution),
+  'plugin distribution URL does not point at this repository',
 )
+check(!plugin.includes('@amp-plugin'), 'unsupported third-party auto-update directive is present')
 check((plugin.match(/"skillName":/g) ?? []).length === 40, 'expected 40 workflow definitions')
 
 for (const required of [

@@ -21,8 +21,10 @@ amp skill add \
   https://github.com/oliver-kriska/amp-elixir-phoenix/tree/main/skills \
   --target "$PWD/.agents/skills"
 
-amp plugins add --auto-update --target workspace \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts
+mkdir -p .amp/plugins
+curl --fail --silent --show-error --location \
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
+  --output .amp/plugins/elixir-phoenix.ts
 ```
 
 Project-local installation is recommended because the guidance is intentionally
@@ -38,12 +40,19 @@ amp skill add \
   https://github.com/oliver-kriska/amp-elixir-phoenix/tree/main/skills \
   --global
 
-amp plugins add --auto-update \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts
+mkdir -p "$HOME/.config/amp/plugins"
+curl --fail --silent --show-error --location \
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
+  --output "$HOME/.config/amp/plugins/elixir-phoenix.ts"
 ```
 
 Amp installs global skills under `~/.config/agents/skills/` and system plugins
 under `~/.config/amp/plugins/`.
+
+Amp currently restricts `amp plugins add` and directive-based auto-updates to
+Amp-hosted plugins, so third-party GitHub plugins must be downloaded directly.
+The commands above are the tested installation path; review downloaded plugin
+code before running it.
 
 ## Verify the installation
 
@@ -143,9 +152,18 @@ amp skill add \
   --overwrite
 ```
 
-Use `--global --overwrite` instead for a global skill update. The plugin updates
-from this repository automatically because it was installed with
-`--auto-update`; force a check with `amp plugins update`.
+Use `--global --overwrite` instead for a global skill update. Update a
+project-local plugin by downloading the current file again:
+
+```bash
+curl --fail --silent --show-error --location \
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
+  --output .amp/plugins/elixir-phoenix.ts
+```
+
+Use the global output path from the installation section for a global plugin
+update. Native third-party auto-update can replace this manual step if Amp
+opens that capability in the future.
 
 Remove a workspace plugin with:
 
