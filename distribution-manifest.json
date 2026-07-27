@@ -1,0 +1,1014 @@
+{
+  "schemaVersion": 1,
+  "source": "https://github.com/oliver-kriska/claude-elixir-phoenix",
+  "files": {
+    "plugins/elixir-phoenix.ts": {
+      "sha256": "8c704fa43e60474d8902ce80ea4965e3bd0dfb3fa5df1b58db961cfad978c871",
+      "executable": false
+    },
+    "skills/ash-framework/SKILL.md": {
+      "sha256": "554fd3624382812563a0ad909e4a643b3443479c4ea570eae843cd0b95540cef",
+      "executable": false
+    },
+    "skills/compound-docs/SKILL.md": {
+      "sha256": "016f0bc03307a310f1e1ff6d0df3f75c30513b410145ab0fc59f8f1e9232b9b6",
+      "executable": false
+    },
+    "skills/compound-docs/references/resolution-template.md": {
+      "sha256": "39f2b15140bede53974d484d3d85b4c2cda2fd66173c8a032d6f81c226450903",
+      "executable": false
+    },
+    "skills/compound-docs/references/schema.md": {
+      "sha256": "c9844826861899d5c37fbc1719f5cc89871d96e452480bd834a255a785ee458d",
+      "executable": false
+    },
+    "skills/deploy/SKILL.md": {
+      "sha256": "5a154f83d9f1cc918455fda580b58ddf149948be12ef20484a8d83f6fd61df2f",
+      "executable": false
+    },
+    "skills/deploy/references/docker-config.md": {
+      "sha256": "95abb64b4727fb2bcf737745d4e1a344e24cf43b4cacea5d1eeed25054f176f5",
+      "executable": false
+    },
+    "skills/deploy/references/flyio-config.md": {
+      "sha256": "ed7ea1abac570a86cff346025801910555ae4ed2dd9e47a9130dd370f1227553",
+      "executable": false
+    },
+    "skills/ecto-constraint-debug/SKILL.md": {
+      "sha256": "97a4deaaff391224b5069aead2f65ae6f045ee7e473a810c6a8a507d77b223e8",
+      "executable": false
+    },
+    "skills/ecto-constraint-debug/references/constraint-patterns.md": {
+      "sha256": "457f52b03a2b787c603c52d6ad5cad63bd6bcfa26482e486cb74106fde441699",
+      "executable": false
+    },
+    "skills/ecto-n1-check/SKILL.md": {
+      "sha256": "ac76644f93a0ae3d5f777df7a1d80dac1c7807a57fbea83363c00f3e44390538",
+      "executable": false
+    },
+    "skills/ecto-n1-check/references/preload-patterns.md": {
+      "sha256": "60801835965c78aed7b8f3db05c399339c7fda56b96ee2715b7da6b9dab6ea5e",
+      "executable": false
+    },
+    "skills/ecto-n1-check/references/query-optimization.md": {
+      "sha256": "414bf0111ad8115d101bb40b11836cedbc29f8c9a632e7aad7095d2310c0f9f1",
+      "executable": false
+    },
+    "skills/ecto-patterns/SKILL.md": {
+      "sha256": "bc734d6b36e22b4a5538536516248c9b0835c52c960c39bb844f433f284c872c",
+      "executable": false
+    },
+    "skills/ecto-patterns/references/changesets.md": {
+      "sha256": "f97f8f114acdd22bf171a50e70b6b179137acba00bd46ec9153d2d97362d82ca",
+      "executable": false
+    },
+    "skills/ecto-patterns/references/fulltext-search.md": {
+      "sha256": "17e9311539f2f52dff098bd36336f177e0e6b181078e5f76fde8dde2e431378b",
+      "executable": false
+    },
+    "skills/ecto-patterns/references/migrations.md": {
+      "sha256": "da577dcea894d89c09ad325cc5a6ff8d67920413b67e4a429303bfcecd4f417c",
+      "executable": false
+    },
+    "skills/ecto-patterns/references/queries.md": {
+      "sha256": "80d1212478d7ae395b8475a35937a8c9ba02b80d109070309955b918cfa1ca1e",
+      "executable": false
+    },
+    "skills/ecto-patterns/references/transactions.md": {
+      "sha256": "7de49aa8480b97760ddc3dec11f4023b58215448cea6b778fe495a1e0fe56b80",
+      "executable": false
+    },
+    "skills/elixir-idioms/SKILL.md": {
+      "sha256": "d4f62427565945bfb03a3db7e89794bf1d19accbe9e535cf8cab3f8bb2b8a19c",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/anti-patterns.md": {
+      "sha256": "681820dd1345236c474077bdfa908cd9bb1f73a1dc8293ca8936a0aa8a1d7936",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/elixir-118-features.md": {
+      "sha256": "6dc0646e166047bc98efc735389133055e8bc66b65071fb53d191a32627f847b",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/elixir-120-type-system.md": {
+      "sha256": "380b62836560ac22c6c02291f637b45e77cdddc6d5cdf8bb191bb90ac8399e2e",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/error-handling.md": {
+      "sha256": "254a6df23919e7dbbd4eaa08766d89d87ee2a6cdde55dbfe77878767a8cc90cf",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/mix-tasks.md": {
+      "sha256": "a512ffdae85efa1324dccf741bc92500218469763b6e1c501b8500cca6c529db",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/otp-patterns.md": {
+      "sha256": "a3bf8710878c4e2d40736e02d339e7709a070899a3af18d06eddde7051e684d2",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/pattern-matching.md": {
+      "sha256": "5f475c3d73c0aa27534f7db01153b9c734cfb83b09efd9c99badf36322f7e23b",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/troubleshooting.md": {
+      "sha256": "f5c8337a12191df6c8a1d72d1eb79d6234d04dd9aab6be70fda317a8dfac2534",
+      "executable": false
+    },
+    "skills/elixir-idioms/references/with-and-pipes.md": {
+      "sha256": "9cd52cebc5be663fd75f54c507042a0e035c83877f715acb63210226467e2036",
+      "executable": false
+    },
+    "skills/hexdocs-fetcher/SKILL.md": {
+      "sha256": "30b0dafc451750b56f2d429d800eeddb0927d250983c046c1f6598a053256ac6",
+      "executable": false
+    },
+    "skills/intent-detection/SKILL.md": {
+      "sha256": "361faf01caaf43a10bd92729bbaf22641399006755e6d297e131bb24a12f0d49",
+      "executable": false
+    },
+    "skills/liveview-patterns/SKILL.md": {
+      "sha256": "dc44b3cefc198b286d73c3c0000a3f00bbc92b0060cad7a343399527668bd5c0",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/async-streams.md": {
+      "sha256": "02e062f82dda02f98e40b497f15eb7fee1be3896567dc248bd698e11fbee96c3",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/channels-presence.md": {
+      "sha256": "438fa524bedf403b7b178c0d1340eff3d30ef943492812d23c5bf661e581e1f6",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/components.md": {
+      "sha256": "6186bde084a2ea5f8abb52013a1d3a0ac719bcc60690bda16b85b2a6b93bd5f6",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/forms-uploads.md": {
+      "sha256": "5c4ea0f79b1d2b8f440fdbc5ae0b59180a5fab0c3f720594891f856376fd65a7",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/js-interop.md": {
+      "sha256": "cd1dbbc4fd8ba47f0c141eae5508dd2d75a96a44c97e8b15f493a7ded2c6f2cd",
+      "executable": false
+    },
+    "skills/liveview-patterns/references/pubsub-navigation.md": {
+      "sha256": "e070c353e5b9bc6e132e08ede1a63da62fc8ad4acf1364567c70d63ad1a3f8a4",
+      "executable": false
+    },
+    "skills/lv-assigns/SKILL.md": {
+      "sha256": "7a757cb6513c4b420cf47ab47d4d1dfcad8095070d5ba7320ebdd352b7994640",
+      "executable": false
+    },
+    "skills/narrow-bare-rescue/SKILL.md": {
+      "sha256": "9425293f6f1645961cc4d69b64e6150ac9cff696079ce167791fa34f52f6ace3",
+      "executable": false
+    },
+    "skills/narrow-bare-rescue/references/patterns.md": {
+      "sha256": "66fc88e9f1ca2c93e01f0ca7df21d58fede9b5edd75c6fb820f93b57558e2636",
+      "executable": false
+    },
+    "skills/narrow-bare-rescue/references/taxonomy.md": {
+      "sha256": "e6b9487ce650fa36b91b3e53672925ccee318e8ba4ac086a781b9ec36c1a011a",
+      "executable": false
+    },
+    "skills/oban/SKILL.md": {
+      "sha256": "b4ae78c1bdb6a067a551b68b8c91d91d8c203467decda51cb58f82437a20d944",
+      "executable": false
+    },
+    "skills/oban/references/oban-pro-basics.md": {
+      "sha256": "92f7bc491a8294ee30b51c909386372c8ecf291f8d5605d8d2a353fc110a1864",
+      "executable": false
+    },
+    "skills/oban/references/queue-config.md": {
+      "sha256": "0a3ce79dc74552aa2973474f934023b56a9577f2cffbd3f3801ae670d06217ac",
+      "executable": false
+    },
+    "skills/oban/references/testing-patterns.md": {
+      "sha256": "740bf618bbd3d06a1bb7b253fa18bcbcd798299b8b002afb7cc423b972dfc987",
+      "executable": false
+    },
+    "skills/oban/references/worker-patterns.md": {
+      "sha256": "eb5db611b4cc771895193f4794bb692c644d097bab7622ad87cbbf7b9eeb8baa",
+      "executable": false
+    },
+    "skills/phoenix-contexts/SKILL.md": {
+      "sha256": "50acb69f75c0b21327cf80cf26fb2c6fe69921d025a3d3b915cbd0fe16e1f93a",
+      "executable": false
+    },
+    "skills/phoenix-contexts/references/context-patterns.md": {
+      "sha256": "4e38ea08c54041b77b9cac737959a65ce4c36334ba996ac9756262ae106acfda",
+      "executable": false
+    },
+    "skills/phoenix-contexts/references/json-api-patterns.md": {
+      "sha256": "ee44bdd5445f4400b5ee4ac537074634d69ef1d45268fe31dc4b3d173e8ac2b7",
+      "executable": false
+    },
+    "skills/phoenix-contexts/references/plug-patterns.md": {
+      "sha256": "751693f2e9c6ce0bbd35e97e9270f6609e957fe8b556597e58fd9c0c29ebddf8",
+      "executable": false
+    },
+    "skills/phoenix-contexts/references/routing-patterns.md": {
+      "sha256": "0e893e9107d71eb0f9f79f36ab1ba6cf7fc09d8889cdc3422376506978038af3",
+      "executable": false
+    },
+    "skills/phoenix-contexts/references/scopes-auth.md": {
+      "sha256": "9cad19dc6a8fe8af78454a5fc6e2e6425d5f1e4edcaf13c96b2f1833d88e0dd9",
+      "executable": false
+    },
+    "skills/phx-audit/SKILL.md": {
+      "sha256": "418ed5a7ce353ee520c2f5a93a0079def4301a8f6574110e74ff3900c37e1e22",
+      "executable": false
+    },
+    "skills/phx-audit/references/architecture-checks.md": {
+      "sha256": "190a10e3b5ee278b732d2b6b75dbfca6b799b3d39249cb27f4619c8d33586f8e",
+      "executable": false
+    },
+    "skills/phx-audit/references/scoring-methodology.md": {
+      "sha256": "9dd795cf8f4051629fc534190f93b8f6a91fb9abc36109b79cc404f602531f66",
+      "executable": false
+    },
+    "skills/phx-boundaries/SKILL.md": {
+      "sha256": "a6bd642aae7b14b12ef3c32c089747172acb3860ea61e8758020ece4d1816034",
+      "executable": false
+    },
+    "skills/phx-boundaries/references/context-design.md": {
+      "sha256": "42367db00b2e452a6e99a04660c7241ed7962ef1ec1848bf04d50b9cb69bcaa5",
+      "executable": false
+    },
+    "skills/phx-boundaries/references/refactoring-boundaries.md": {
+      "sha256": "0a0016076aecd990ad2efce8a0faca24533dfb5904fff640feb1b92b1a00ad42",
+      "executable": false
+    },
+    "skills/phx-brainstorm/SKILL.md": {
+      "sha256": "f8ea5de5e06a68e566f74e6b3f2e14133184affc41a3dc1a7c22e0fa6101b516",
+      "executable": false
+    },
+    "skills/phx-brainstorm/references/interview-techniques.md": {
+      "sha256": "1615946cecadb56e0af8d94b35dec9412edaf080275f1feefb9c212c2865c23e",
+      "executable": false
+    },
+    "skills/phx-brainstorm/references/research-integration.md": {
+      "sha256": "200f147bf230d13c8a670a16ad3864058aefe15d7de78c46fca9a91d25107f01",
+      "executable": false
+    },
+    "skills/phx-brief/SKILL.md": {
+      "sha256": "c7e648e8c9881291c9eecd62b2032b286ba64454608ce0d05eedc66391cd7c4b",
+      "executable": false
+    },
+    "skills/phx-brief/references/briefing-guide.md": {
+      "sha256": "d46a9e96a91f3e14626c57addbcbdbe1d1611cc1a7bc01cbd8fecc792bb595ec",
+      "executable": false
+    },
+    "skills/phx-brief/references/visual-explainer.md": {
+      "sha256": "18caf363d3a2eb826a082301e664b83dbbab6e4bfe227e7f4e8e45da9787d8a1",
+      "executable": false
+    },
+    "skills/phx-challenge/SKILL.md": {
+      "sha256": "7e3f13046febf77091fd817bc1707d3e11a880a20d739cf0c371cbfaf3af8d2c",
+      "executable": false
+    },
+    "skills/phx-codex-loop/SKILL.md": {
+      "sha256": "3342ff32ae7d6aa9f42bb5db96546aacc8845220ad5cd5b3ed6e2af375f2f8e9",
+      "executable": false
+    },
+    "skills/phx-codex-loop/references/codex-cli.md": {
+      "sha256": "b8b017fc671ff5f638bce41471e4e9d66c632d5f32d81a867608314ed4db4f08",
+      "executable": false
+    },
+    "skills/phx-compound/SKILL.md": {
+      "sha256": "d10d6506ff1cb09dbf92683224d847c668bc08228e93c3500415ab66d2cf03cf",
+      "executable": false
+    },
+    "skills/phx-compound/references/compound-workflow.md": {
+      "sha256": "3281cd2ae6dd82e6e0423a5284efc9039848061ad2aad15489cc3dc5e3df9a16",
+      "executable": false
+    },
+    "skills/phx-deps-audit/SKILL.md": {
+      "sha256": "4b30ebd12941a82d4916c81cd821c1674f9c560c9550d52861cb3910709340e1",
+      "executable": false
+    },
+    "skills/phx-deps-audit/priv/cassettes/capture.sh": {
+      "sha256": "223f2e69689c5513a16d3d04a0813938c5681fa80ec2e052bd41d4e773ab238e",
+      "executable": true
+    },
+    "skills/phx-deps-audit/priv/semgrep/elixir-supply-chain.yaml": {
+      "sha256": "91da28a0306a22d930bfbf2079926ec56774ae78cf8347765ec024acd8fae71a",
+      "executable": false
+    },
+    "skills/phx-deps-audit/priv/yara/hex-malware.yar": {
+      "sha256": "0a8557a2ce3bc54b8f42cf7c6cf7cf7758da8660facf84c1732917173f0a665c",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/audit-tmpdir.md": {
+      "sha256": "1bd04b2204c2c5b816ac6e5cbed5e8afb666563e5692fd7c44f92ccc08ef3b31",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/cassettes.md": {
+      "sha256": "08101cf65029d29fff628edf6479fea280782ee118cb9b3fb124cb77247a5811",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/ci-integration.md": {
+      "sha256": "732f9e22e136276aa548e426adeee193f3222d81d3115218912f83053cc6feb5",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/diff-resolver.md": {
+      "sha256": "037fdf546761b10db4cc95505b09cdf71d48af4ba908e83b146b6b83678dbfca",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/differential-cve.md": {
+      "sha256": "3f9667e7c6278ab59ea4100db226873474e20e1520cd3a7835bb234ac5d29860",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/differential.md": {
+      "sha256": "e94e0fc63f11278e881ca96ed4b4bca545d829b4dbbb6a74c65c0e7505dc4fb8",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/execution-flow.md": {
+      "sha256": "41f47cb29f66a47b6afe23ce12da8e0a48d5a208f1b00c4cf07070f770eac789",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/external-tools.md": {
+      "sha256": "44c9c2779ee7dac4c4ba8f1f07e37e63a3866c0b75b327e2d2f593897086f04d",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/heuristics.md": {
+      "sha256": "242bfc1fcde2c1f8d56f44d437af8863b0862cd6b3a031087fb7d95db820e370",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/hex-api.md": {
+      "sha256": "599b4d5489b9653c201c538a88c0600ee7c8833832110462630801c7afe5205c",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/hook.md": {
+      "sha256": "3f1daa5f755dd3d511ad196fbe7c4915c7ce6fdf61229e048f1b0219eb2ad613",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/llm-triage.md": {
+      "sha256": "6b226846c714869ead8b05b49a3cc2c626a88452b65e3f592e8a287671e36749",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/operating-modes.md": {
+      "sha256": "3458e373c7bcd61723d7acb70a4cbcc538ef78b933be17d91c5c21e08b04201e",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/output-renderer.md": {
+      "sha256": "505e9b46b3a2d0712e2c257b3c64ebe58ee3b1046cdd22aed1708ec8150ea548",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/rules-impl.md": {
+      "sha256": "38fa1c4d97df68a8494f5f0a4418319414c1ce73fa8fe5b75cf5a6a44ca1a174",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/sarif.md": {
+      "sha256": "fa2493603245bdd33b4e182f43840bd7cbbf85184ff11f8ce7499a6813665486",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/semgrep.md": {
+      "sha256": "cf89b8672b71b3f1aa8ad7fa9f38c17b8f09717b1f300250eb87ecfe4c08ce17",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/skill-checklist.md": {
+      "sha256": "98af0b57925dad9e54c4c09479be85825d81e77716afeb1dce16865b8ef1e015",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/tarball-fetcher.md": {
+      "sha256": "0e323fd07f7bcda4202ebc8754be98b6be824fbe798c7e2d082d349c0bf73665",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/testing.md": {
+      "sha256": "b99424d18275db0c3248b3ac92475ad2699445f28e69cd72feb25423d1fe4b26",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/trusted-publishers.md": {
+      "sha256": "038477af286625797c6bdf997cd808c9366dbad3d82376171c8870fc69c0df4f",
+      "executable": false
+    },
+    "skills/phx-deps-audit/references/yara.md": {
+      "sha256": "9a6e877be1942ddf52947f98f50b9f251e594760e5e1ab4a6d5914a1e4f00a71",
+      "executable": false
+    },
+    "skills/phx-deps-audit/scripts/diff_cves.py": {
+      "sha256": "7753578090668dc377953a0915526840df5caee661a96f6025288d23b19e94aa",
+      "executable": true
+    },
+    "skills/phx-deps-audit/scripts/diff_findings.py": {
+      "sha256": "05031083cf7d55f912e55026d151ca4aa1de291de46f5ea83cd20899990f8a1e",
+      "executable": false
+    },
+    "skills/phx-deps-audit/scripts/findings_to_sarif.py": {
+      "sha256": "fbf37e7e73e4b5f0193bc3a3e123eb0807a962be21049018a09527f3aedde020",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/README.md": {
+      "sha256": "6200dbd5ff219dc6c71f1ada48cc93001465f55aedd9145ee6bb988eded4b363",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/benign-100.txt": {
+      "sha256": "3b38ae127fa10685106cb9c2b50d6496f763379fcd5321f0691c2ccf0224eca9",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/README.md": {
+      "sha256": "10b766c9026bde34be361ee52af4c539e7b74aa2a3dc0b127a70d283c7bac655",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-bandit/expected.txt": {
+      "sha256": "838ec0f429251d3489db4bc6cb967df2ebeecc422e25a45f57965bb180ed4e43",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-bandit/setup.sh": {
+      "sha256": "fcad1c9b4dceff214c386a47b68b6f735593cef877ce7f68cce9dd87250d7675",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-cowlib/expected.txt": {
+      "sha256": "8a9e9d0136e9a865cc7081c3730b1049f7a962891241e9ad235ef260a730d68b",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-cowlib/setup.sh": {
+      "sha256": "b463c57b774cb85f6b9e5f8456c42f95bccec19dc21519aae62469c04c869476",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-decimal/expected.txt": {
+      "sha256": "4b2f1b6b6ccf90831698c12d0129932cfcf2a4bbc05da3a61307e21c85151271",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-decimal/setup.sh": {
+      "sha256": "63dfa18975395ab877a343ffc47c9c34a81d962fb8440c71592db3f97a488d56",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-phoenix/expected.txt": {
+      "sha256": "097bd163ad203167d917414d929254da136e739f7f4863ece9c6c8b225937ef4",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-phoenix/setup.sh": {
+      "sha256": "d05b4f9d41bfc90c05e017d9f3fb69d6b664efd3255516dfded69c7b9d5909c1",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-postgrex/expected.txt": {
+      "sha256": "fc833dca9e662e6fff268b88a5a522c29412f8f9c5a04fb3c5dd0c202b5dcf40",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/eef-cna/eef-cna-postgrex/setup.sh": {
+      "sha256": "6c332cff4ce47e42258270653edf8e27967dadb9b506385309e7eb3ba01e41d0",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/corpus.d/fetch.sh": {
+      "sha256": "97ba22f2a19d0495026d73fb8c38b51af13fa1097259489248ec1c47ed327692",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/cve-diff-runner.sh": {
+      "sha256": "5d657a39e7e2549c9ff8f9a874a25ec6ea5e349d2ccbe11d53651d3cbf36d4fa",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/00_clean/expected.txt": {
+      "sha256": "d2dd1a4ec3d80a492522c6c820bb4d650e33eb11f3a732615b9da75186009989",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/00_clean/setup.sh": {
+      "sha256": "ad05182972d008f40392f351bcd4469b1e3e364e4b0f90fe91a98d8fe34695aa",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/01_bidi/expected.txt": {
+      "sha256": "1db9ec42f4081f0b9822b8a166bfada229651060f18f78dbfe306dcc953d1d25",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/01_bidi/setup.sh": {
+      "sha256": "fd8d921d4b26bca2dea1000fb4905cbf07dbc3cb3b7aba3c900a57ee48c10816",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/02_eval/expected.txt": {
+      "sha256": "19f02b74e6d2bc60dd7fcc175d181b0f1b523253d12e6f0a591f6a42a5a06d27",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/02_eval/setup.sh": {
+      "sha256": "8fe3d5e860aaa97f7ef61eabb82f77580a84ffeabb455865db005f6c2cf79a34",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/03_compile_exec/expected.txt": {
+      "sha256": "0d176ad8bcdf45e47aaf9d57016563b6ad224a83408ac9518b19ee20732767fc",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/03_compile_exec/setup.sh": {
+      "sha256": "4efd8d5a108174777ec98f71e952e64ff77ed12645a615434828c38b7a354b55",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/04_binary_to_term/expected.txt": {
+      "sha256": "0bb1bf547d4984b004775a6bee8b665063ea55f241f9910ee22cc3fb2e17c346",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/04_binary_to_term/setup.sh": {
+      "sha256": "be013932e6068ec43839bee9d771f89d5a60334621d2d220e9056cff7e7564e1",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/05_git_dep/expected.txt": {
+      "sha256": "66b1828e08e6b6a5a461b86c6110a339fdb28d79e94dab3615c802e1e2ec8a5e",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/05_git_dep/setup.sh": {
+      "sha256": "4009cd2ec2099902f231e8e89d2915711bc12bb454f9c4c3f5040cbea73ae37a",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/07_base64/expected.txt": {
+      "sha256": "ffa7bc986f65eb058e5ef9fbf3d2e82c67e47c78c9c3d718438129e61265945a",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/07_base64/setup.sh": {
+      "sha256": "e80222042d17a9209e33d4817666a2ef5e067572c9ba924bb10fb8d049c34a48",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/10_axios_combined/expected.txt": {
+      "sha256": "7a1ed0a61c787f1c7f7f7ea115dafd436558d8024e8dd492fe8e9825340b974e",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/10_axios_combined/setup.sh": {
+      "sha256": "f328b92e906d2bced52a6a2cd52ceed38de197d1f0d1781d35acf4d5cc413c6e",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/11_event_stream/expected.txt": {
+      "sha256": "42b7f0fb33ae2de43a84935923b9482321c67014a6315c970b7dad84640aba4b",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/11_event_stream/setup.sh": {
+      "sha256": "a2d7b17dee7d9bb3618663e7f1c672e1fbd8ff26d086f7a7442b083ef8ec0065",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/12_homoglyph/expected.txt": {
+      "sha256": "679788b22bbfbb0bd08071b661506f7a25d80c97a639f21c608b93c948da14da",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/12_homoglyph/setup.sh": {
+      "sha256": "207ddb05dfbe21fec61af7fc22c9a14f2f7f5f25f012a4408083c1eaf5ede9cc",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/13_obfuscated_typosquat/expected.txt": {
+      "sha256": "b72785425238d4db13e9f0dcb312a3d5f4d3810fb47679985486974e711228db",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/13_obfuscated_typosquat/setup.sh": {
+      "sha256": "9dcc10766ba30e35122635d72777d63a773660f28173781533fecd285a54c694",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/14_nif_blob/expected.txt": {
+      "sha256": "ffa7bc986f65eb058e5ef9fbf3d2e82c67e47c78c9c3d718438129e61265945a",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/14_nif_blob/setup.sh": {
+      "sha256": "ce730d8f89e538616e909b5acce1256e90c916ff4912df68c54c9d256db20afb",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/20_cve_patched/expected.txt": {
+      "sha256": "8dc7e1ddc45460f6b78d81bf7f0a2f74e63c7f6f50b1a0c24f48039fc79dd88d",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/20_cve_patched/setup.sh": {
+      "sha256": "2e4145c4c86a8dac2fecf61159207754ac49f2750f0e386105e48c05e5b34e65",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/21_cve_introduced/expected.txt": {
+      "sha256": "b20d2c5032f8c2e74c69adadcc1b2f762d8fbe87e9fdad02ad479fb3abfc5f4f",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/21_cve_introduced/setup.sh": {
+      "sha256": "bac8fb5849e098c058fb338f8d5564cc05670b09fd03f025b1ca44eb7e1521c1",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/22_cve_still_exposed/expected.txt": {
+      "sha256": "20297af6aa9b7b4e2ae3c8e4371274f38ab60ac93cfbe69bdc2210ae1d02d78f",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/fixtures.d/22_cve_still_exposed/setup.sh": {
+      "sha256": "6a4372477581f009beefb94926a8b5a9d287b5908e3267ff57a65f70c6262108",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/gate-test.sh": {
+      "sha256": "c718ee22e0a7cb89a5bfda211c3467df1e5bc0dbb94859bd2e75c62ca088c049",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/lib/detectors.sh": {
+      "sha256": "8a4cc410f008293b930362292e026bc942f46c9ac7314fed758108c4412ba720",
+      "executable": false
+    },
+    "skills/phx-deps-audit/smoke-test/runner.sh": {
+      "sha256": "2c4f81c552bc0e47dc7e96780c8a80a643cbe2626b6ab2d4fff528f97bbbf6d6",
+      "executable": true
+    },
+    "skills/phx-deps-audit/smoke-test/sarif-round-trip.sh": {
+      "sha256": "053744193d28c0b42dacb10043656cbe04d7016879daf7e67f027ed3b76d5920",
+      "executable": true
+    },
+    "skills/phx-deps-audit/test-assets/hex-api-cassettes/_meta.json": {
+      "sha256": "d1ca690bace9661e892af91ce96bc7e227b30bd8d978a9e2543ff26c4f99915e",
+      "executable": false
+    },
+    "skills/phx-deps-audit/test-assets/hex-api-cassettes/jason.packages.json": {
+      "sha256": "7cb8b90520d8d80c5de49ba8d983b308cacb31b6cfb903e1fc17238c6bb4cc67",
+      "executable": false
+    },
+    "skills/phx-deps-audit/test-assets/hex-api-cassettes/jason.releases.1.4.4.json": {
+      "sha256": "e826ef1bb226895903111860e6f71e5b9e13a77222af9ee96b22017e137a5659",
+      "executable": false
+    },
+    "skills/phx-deps-update/SKILL.md": {
+      "sha256": "5dd6e75f7067ccf272c264269b6fe83f41d6582d011e486eebe4ba23cd9f6b94",
+      "executable": false
+    },
+    "skills/phx-deps-update/references/changelog-sources.md": {
+      "sha256": "137f61e7eb46d704e079789e25631d9047bef3caf58b366944b87cd60f0121f6",
+      "executable": false
+    },
+    "skills/phx-deps-update/references/coupled-groups.md": {
+      "sha256": "285c540b89581cba52bae8ca141be401723964bb926ba762a05c3ec68feff655",
+      "executable": false
+    },
+    "skills/phx-deps-update/references/pr-strategy.md": {
+      "sha256": "7d0a38a6a009ea24a6fbc1a3fad92f9dbd3d86e2dab80b73b6c69e8b436260bf",
+      "executable": false
+    },
+    "skills/phx-deps-update/references/update-mechanics.md": {
+      "sha256": "017ca7db34172e1b7d8965b1c371a09a3296f01cf882e16d70b89dc5d8449b8f",
+      "executable": false
+    },
+    "skills/phx-deps-vet/SKILL.md": {
+      "sha256": "aad3a721ab239bc733cb7090eca402aa1cae138694ca23ff33c5becef83c3d7d",
+      "executable": false
+    },
+    "skills/phx-deps-vet/priv/hex_vet_seed.exs": {
+      "sha256": "9afd28524a20250670a1bb33ab44516fc67a49b35d2cb2db0f45df9914c69eec",
+      "executable": false
+    },
+    "skills/phx-deps-vet/references/hex-vet.md": {
+      "sha256": "aa579459734fba64804a6b8fb053686ed5f81ca23b0005c279a9d8f03eb52ae2",
+      "executable": false
+    },
+    "skills/phx-deps-vet/references/seed.md": {
+      "sha256": "bf7dbfed10120935beca2d677ef8b532d8ae328c6b8b84c040ff2a4b11530531",
+      "executable": false
+    },
+    "skills/phx-document/SKILL.md": {
+      "sha256": "cde19370152a85d61d9436019d2c693474750c4ae58391f4e404157b130c09a0",
+      "executable": false
+    },
+    "skills/phx-document/references/doc-best-practices.md": {
+      "sha256": "101e8f9c2b54d27078468fabedd29e7ba22d644199655a766757a19a1351182a",
+      "executable": false
+    },
+    "skills/phx-document/references/doc-templates.md": {
+      "sha256": "24231ec9a27c8b06821a22898aab098bd7654974c2e77b84c6f4986d2890629a",
+      "executable": false
+    },
+    "skills/phx-document/references/documentation-patterns.md": {
+      "sha256": "c8d765467d568888e427d2b448d54c2da9818c5c7718e1898c8043c517dd0166",
+      "executable": false
+    },
+    "skills/phx-document/references/output-format.md": {
+      "sha256": "cdf3b879ea7f2f3bd02871093c47728a325005d03772857c3900450a16dbb9c6",
+      "executable": false
+    },
+    "skills/phx-examples/SKILL.md": {
+      "sha256": "bb71ea5f9cf848bc3852ea6164f0dfa0d2f76d3a93f068d77e512a59ec58b00c",
+      "executable": false
+    },
+    "skills/phx-freeze/SKILL.md": {
+      "sha256": "ffcfbb85e851447f489ae53c5e5a46f01854e9f88f046e88b5e300fbf47eabd8",
+      "executable": false
+    },
+    "skills/phx-full/SKILL.md": {
+      "sha256": "07b955c3a77db13bb13bdc4fb47dc172f768235e4b1e750f9bd302b22acba57a",
+      "executable": false
+    },
+    "skills/phx-full/references/cycle-patterns.md": {
+      "sha256": "27ea73afec013ed3bd285848a9c1b6fd4204cc35383e414cd4393226109ba411",
+      "executable": false
+    },
+    "skills/phx-full/references/example-run.md": {
+      "sha256": "015c49ade838b43206f49e914f7d2f1a15e77787b3cd58e1ee60e216803b5787",
+      "executable": false
+    },
+    "skills/phx-full/references/execution-steps.md": {
+      "sha256": "04ac4ef0f5065d0d30cc482616c1f8c201af3949ddf2681716dcbd07e176d784",
+      "executable": false
+    },
+    "skills/phx-full/references/safety-recovery.md": {
+      "sha256": "ec84a41e20c529f9b7c99856a34411b3271477efac6af714cda94292dc300ef8",
+      "executable": false
+    },
+    "skills/phx-help/SKILL.md": {
+      "sha256": "54241f4ca931ccba9bb413be133bc5508712c049f441ac761435d78155d97447",
+      "executable": false
+    },
+    "skills/phx-help/references/tool-catalog.md": {
+      "sha256": "58ba7babcca11d52d712fddf3da9fdb16baffb4201b7d4bd11112bd288117c5e",
+      "executable": false
+    },
+    "skills/phx-init/SKILL.md": {
+      "sha256": "4a62ad125cc5362791b832271890bfb45047d3e67ec4966a91b9a7b539718e27",
+      "executable": false
+    },
+    "skills/phx-init/references/codex-review-guidelines.md": {
+      "sha256": "72866a635b2795172fd9aad916e7b2408b837a476580820ac65040b9d9c1a426",
+      "executable": false
+    },
+    "skills/phx-init/references/injectable-template.md": {
+      "sha256": "b976dc7d54e9a2623a32e45b8bef046744a5117424bddfb59c63c2c937ff076b",
+      "executable": false
+    },
+    "skills/phx-intro/SKILL.md": {
+      "sha256": "b6795286cc896121f6dd158935e2d63fcdbc42cd757538d8476bac6b4c5e3517",
+      "executable": false
+    },
+    "skills/phx-intro/references/tutorial-content.md": {
+      "sha256": "e442515ac3a5e7d7f9ef88f7f578834ef419778260ffcd0ba7d4fbda62cb5fbb",
+      "executable": false
+    },
+    "skills/phx-investigate/SKILL.md": {
+      "sha256": "ccb072d53d211d6f43e60c2e112177f34a3db9d55c84a6e7210a9db3d7354f05",
+      "executable": false
+    },
+    "skills/phx-investigate/references/debug-commands.md": {
+      "sha256": "0cef857f30505ea6eb5bae3f753972763123d643d1e54687c4acab28ce4720a7",
+      "executable": false
+    },
+    "skills/phx-investigate/references/error-patterns.md": {
+      "sha256": "67435d3acd8b80899ef69b671faed1a6d2972cfca71b4dc1a233ee776d130b41",
+      "executable": false
+    },
+    "skills/phx-investigate/references/investigation-template.md": {
+      "sha256": "83285f8e49403ee5ac126f61449e809bafd3cc5b1dd7d555d478c6ba4e977c70",
+      "executable": false
+    },
+    "skills/phx-learn-from-fix/SKILL.md": {
+      "sha256": "f06291565accb83b497bba734a5f57a487f02a6047e0b715d02b1ead4787abd0",
+      "executable": false
+    },
+    "skills/phx-learn-from-fix/references/common-mistakes.md": {
+      "sha256": "714d9b29b2cb15cb2ac96d647260883ec8f8db0fd5027b9666256e4b8e29c9d0",
+      "executable": false
+    },
+    "skills/phx-mix-compression/SKILL.md": {
+      "sha256": "88d885c1fbbbd7090276968d2fcb34e07e971e5e2996ebdade4258ba5d588b50",
+      "executable": false
+    },
+    "skills/phx-mix-compression/references/install.md": {
+      "sha256": "341f192e0c2ea3c8891b16b250d5eb39e8c7b42601c7a5da5374d2a263a8be9c",
+      "executable": false
+    },
+    "skills/phx-mix-compression/references/rtk-filters.toml": {
+      "sha256": "17e1eecbfb3dc8f413327e8a2bc8b3687628966a6bf4a3b639149b5b76e971f8",
+      "executable": false
+    },
+    "skills/phx-perf/SKILL.md": {
+      "sha256": "f3ccaf004644bba4dfb7dce5c8cb0d36805f50d7590a2d485763feaca6f4110d",
+      "executable": false
+    },
+    "skills/phx-perf/references/benchmarking.md": {
+      "sha256": "4e8787625ab3c08094bf3678c1bad3cfaa1a870363bd91344201d3540a66587a",
+      "executable": false
+    },
+    "skills/phx-permissions/SKILL.md": {
+      "sha256": "275a0fdf5da80bc5fbd8e1204dea62ce57d38f78d70c671eb8f70cac3221e589",
+      "executable": false
+    },
+    "skills/phx-permissions/references/extraction-script.md": {
+      "sha256": "7076ad9ef70d20026bb5868ca78cd51b4f201ddfa53da3f55954f4271d087d0a",
+      "executable": false
+    },
+    "skills/phx-permissions/references/risk-classification.md": {
+      "sha256": "e63aa03fafe35060e769becadb301224457fcc9c5e1877ed263892f05871a550",
+      "executable": false
+    },
+    "skills/phx-permissions/references/settings-format.md": {
+      "sha256": "3286bf83fcfd8276348625ac9aa49c393ca333c0c5a2b94119e834e6b93b22e7",
+      "executable": false
+    },
+    "skills/phx-plan/SKILL.md": {
+      "sha256": "1847c13ef5c18cb4bb2f7c4bac5f91c45d692de184c7acac38cc8e0f2c94732d",
+      "executable": false
+    },
+    "skills/phx-plan/references/agent-selection.md": {
+      "sha256": "bb83ae4367fe75ad47cb8c57d94bf836ef07ce7abecd629d665f10212630a125",
+      "executable": false
+    },
+    "skills/phx-plan/references/breadboarding.md": {
+      "sha256": "3b7fd12babe6be3437a782984e6e0402fb6122c44a2fee532637b27c28b4cf65",
+      "executable": false
+    },
+    "skills/phx-plan/references/complexity-detail.md": {
+      "sha256": "cac23db9939e90f62cdbbf379bd44c1437265e5aa22a42e4b1a75c535fd1e513",
+      "executable": false
+    },
+    "skills/phx-plan/references/example-plan.md": {
+      "sha256": "a4cf33720dfd193bac9a725b2ee0acb3f6f1297a03aaa80d82a0e848d0d4339b",
+      "executable": false
+    },
+    "skills/phx-plan/references/plan-template.md": {
+      "sha256": "eb41c291160e8a43c8937d0b5b421d075aaac303eeaa596a18b3be4a751107e5",
+      "executable": false
+    },
+    "skills/phx-plan/references/planning-workflow.md": {
+      "sha256": "d3d9f4d238985d142bb2dfe7ab9f34bffdf04fc6046146fed8671d9725291c22",
+      "executable": false
+    },
+    "skills/phx-pr-review/SKILL.md": {
+      "sha256": "f2881ea6d1fd33a1e10f5c3c47e31a7e5a5344d81e79aa23c89eb288630c2703",
+      "executable": false
+    },
+    "skills/phx-pr-review/references/bot-triage.md": {
+      "sha256": "603fd88317a1d31f404df669cd77ebb14262502c560acfea3895d0043bf92d91",
+      "executable": false
+    },
+    "skills/phx-pr-review/references/gh-commands.md": {
+      "sha256": "112fa280ac021935bae142cb867071f56346e6167bb87d7474cb1cc0f18b4d27",
+      "executable": false
+    },
+    "skills/phx-pr-review/references/response-patterns.md": {
+      "sha256": "fffd2974889053b256b1f0246583b14d0b6e9579f57b02a094224c989e938b07",
+      "executable": false
+    },
+    "skills/phx-quick/SKILL.md": {
+      "sha256": "9d7c93b4d56779918749a7a424a28e82b35f56bb86d2a5b1cd134592954b9d98",
+      "executable": false
+    },
+    "skills/phx-recall/SKILL.md": {
+      "sha256": "2593972651271c84bb726bacb79c7ee941ce031ea43f6a43828dbe607ce60383",
+      "executable": false
+    },
+    "skills/phx-recall/references/archaeology-patterns.md": {
+      "sha256": "1a2d1537d618791aa2594e525cae0ca2b765978700ba2b5a4dadb6e7858d15c2",
+      "executable": false
+    },
+    "skills/phx-research/SKILL.md": {
+      "sha256": "04cc41ebe9b34e90bfd11a9beeefd3d744d02e64d2d5a38b369bb7cb2cad22c2",
+      "executable": false
+    },
+    "skills/phx-research/references/library-evaluation.md": {
+      "sha256": "e4f63b802560fc7107d410740665ac0d03440c213fb62580730f999414a7b496",
+      "executable": false
+    },
+    "skills/phx-review/SKILL.md": {
+      "sha256": "5a6dd10d690655e9f0073d5e0697272f9e1cd3ccbacd320fdc2e9a655f6a09b6",
+      "executable": false
+    },
+    "skills/phx-review/references/agent-spawning.md": {
+      "sha256": "64ee6db5347bca2fb02119962a375bbc1c8a8c59e3227e7fe4be6418fe9e88a8",
+      "executable": false
+    },
+    "skills/phx-review/references/blocker-handling.md": {
+      "sha256": "56c6b96aac3c4bd29725172f9823ff0d496df64d5bd7f5484f02393ff5af68cd",
+      "executable": false
+    },
+    "skills/phx-review/references/conventions.md": {
+      "sha256": "b5ead89d09356a5ed06d28c2ae112ba2c686d777e9e2f42021d89fcf01c9c537",
+      "executable": false
+    },
+    "skills/phx-review/references/example-review.md": {
+      "sha256": "ba12f8209f0924317963847a674b6feded9b83a4596c8f2f402f9584b67135ff",
+      "executable": false
+    },
+    "skills/phx-review/references/requirements-detection.md": {
+      "sha256": "bb95930e5de67bc9728d3925476f2e2a2bdb772b34f379e26896e932ed8eea48",
+      "executable": false
+    },
+    "skills/phx-review/references/review-template.md": {
+      "sha256": "641d76b16c05c7a5178d0c69923ca0b9f61d7a2acba505e84a1b55a7af501135",
+      "executable": false
+    },
+    "skills/phx-techdebt/SKILL.md": {
+      "sha256": "1418fa15bf778872f2a7937df8a5c890b884a4f6b80f8d24649696a95dc78073",
+      "executable": false
+    },
+    "skills/phx-trace/SKILL.md": {
+      "sha256": "4248059466fbfcf7743bd1d10835f0d7e4f3e174aae2c793d6339242d2b1cc16",
+      "executable": false
+    },
+    "skills/phx-trace/references/argument-extraction.md": {
+      "sha256": "01113d9e2aaad7cbf2d9c8d421bce3cb5e41fe1433b52fdad873e7d3e34262e7",
+      "executable": false
+    },
+    "skills/phx-trace/references/entry-points.md": {
+      "sha256": "91d9f6677549a595e30b3df511def05e35a969e0dbc3e052458be7afb73383d2",
+      "executable": false
+    },
+    "skills/phx-trace/references/mix-xref-usage.md": {
+      "sha256": "de3bd850b71a8e17af0fe57632b581cc8ccd06f3ea37756e513bbd5271fc3893",
+      "executable": false
+    },
+    "skills/phx-triage/SKILL.md": {
+      "sha256": "b6e4ee5fd40eff18bdf93faadd82e4eaacc63e2b8049a94dbd405b6bd1768143",
+      "executable": false
+    },
+    "skills/phx-triage/references/triage-patterns.md": {
+      "sha256": "d682ec0a3660a46c57fc21f0f4680cc642b7f097c04a37ae5d744d465b879928",
+      "executable": false
+    },
+    "skills/phx-verify/SKILL.md": {
+      "sha256": "b5bbe922cc04ae5eda942e528e0600cbb78fc6e58eb3af98dee37b921d577c49",
+      "executable": false
+    },
+    "skills/phx-verify/references/project-discovery.md": {
+      "sha256": "d76f2bf812b519bb1741621d000cfeaeaa3c158da4f23d28a324e6830d54d254",
+      "executable": false
+    },
+    "skills/phx-watch-pr/SKILL.md": {
+      "sha256": "17e34768fd1243ab0b61c94d21a7dc3a97dd7d8192c897956de5ea4375af4dcc",
+      "executable": false
+    },
+    "skills/phx-watch-pr/references/watcher-mechanics.md": {
+      "sha256": "97e3ac60c6b5f06bc530f2c9f2f747d4a971769353866cb555ff4bcf402623e1",
+      "executable": false
+    },
+    "skills/phx-watch-pr/scripts/watch-pr.sh": {
+      "sha256": "31de58ce8736a7845cf035ed842c65326cb8750e0a40c9a93ea8d87498b62a18",
+      "executable": true
+    },
+    "skills/phx-work/SKILL.md": {
+      "sha256": "ba15c7b630398320f9721814ccd1e7493f8df8c0ab57a24d9f581223b5310e6c",
+      "executable": false
+    },
+    "skills/phx-work/references/error-recovery.md": {
+      "sha256": "bc35424f9f1e6778713cd564fc19fe874722f8e31a10cb92b4ce0745f6347ae9",
+      "executable": false
+    },
+    "skills/phx-work/references/execution-guide.md": {
+      "sha256": "16926b262cd55ac8bdf7ae8723cf0891d9d2c2fe9ed7b004b21943239627a40b",
+      "executable": false
+    },
+    "skills/phx-work/references/file-formats.md": {
+      "sha256": "c891c66102fee94a4cc8863b44a3a5113faebe2e3df3ab39f6e545dfcef9b4f5",
+      "executable": false
+    },
+    "skills/phx-work/references/harness-patterns.md": {
+      "sha256": "95d99d666c2868e4646f42aea580561a7cd78e63d0d1cbb25a1bc9b30d47f85d",
+      "executable": false
+    },
+    "skills/phx-work/references/resume-strategies.md": {
+      "sha256": "e00772d7fc734cf1cbf1ea70c7cdff3127a6a4a1643180bd65d98e0e03eecaa0",
+      "executable": false
+    },
+    "skills/security/SKILL.md": {
+      "sha256": "f376df6097b974511a53c8ecaef8e7a9ab96ab0ac26580f2d41d86acb0c6cd74",
+      "executable": false
+    },
+    "skills/security/references/advanced-patterns.md": {
+      "sha256": "b2f2333c2622e5de83a9d21ad5a0ad603da00601d87b6f9d50ce570ad9629ba1",
+      "executable": false
+    },
+    "skills/security/references/authentication.md": {
+      "sha256": "2b637cfaea0b732e15a46bac6e08ef0c102bc39f14e0535e699cb09abd887c1a",
+      "executable": false
+    },
+    "skills/security/references/authorization.md": {
+      "sha256": "8b507fdac8678304e3c610faa3ba8f371c1c1e6cecb6d8cdddecf31e1b93f186",
+      "executable": false
+    },
+    "skills/security/references/input-validation.md": {
+      "sha256": "2dfedd6ea557a0d32fd39d5c8e747d17e0db2509a165097685292f306ea79b12",
+      "executable": false
+    },
+    "skills/security/references/oauth-linking.md": {
+      "sha256": "016484d94c1b88360a5b88c504458f9c65aace6e0fd569dadd56d7e8a2e01d71",
+      "executable": false
+    },
+    "skills/security/references/rate-limiting.md": {
+      "sha256": "56fd105bb5c4677452fce714c76ddf57c8b5e6e8c5bae0f0861cc176a711b56a",
+      "executable": false
+    },
+    "skills/security/references/security-headers.md": {
+      "sha256": "dd2da018aeccc0535d38e5cd760863a243259f1ccdcaa44aa7228d61e6467502",
+      "executable": false
+    },
+    "skills/testing/SKILL.md": {
+      "sha256": "23fcc36a7acb24ff21cc9cb46cff12211b54fbddbd9f16f6166be117b6c8e5a4",
+      "executable": false
+    },
+    "skills/testing/references/exunit-patterns.md": {
+      "sha256": "4260de27680aed6f6150bc57b04502ced65055c5ffab124fa8f0d43e08d7d44c",
+      "executable": false
+    },
+    "skills/testing/references/factory-patterns.md": {
+      "sha256": "11c428087297c276fece0e850a75ff86fa6c2dce4353038daffc2bfcb8e179ff",
+      "executable": false
+    },
+    "skills/testing/references/liveview-testing.md": {
+      "sha256": "9a8a4a33b1060c5b016bba7bdbda729b682df82e024b8e66deb9f48044cbc101",
+      "executable": false
+    },
+    "skills/testing/references/mox-patterns.md": {
+      "sha256": "d39784d9df05d2e8dc531a1e5d59cf86768e79c7856806d41cc47aba9fd49ce6",
+      "executable": false
+    },
+    "skills/tidewave-integration/SKILL.md": {
+      "sha256": "aaa763a4f56183fd33a8d352b925055a65d649a668303377f961724674aa3584",
+      "executable": false
+    },
+    "skills/tidewave-integration/references/proactive-patterns.md": {
+      "sha256": "7839f4751d495953daec03bb1ebe1e8377d42c2fe4cc776df8030267ef9a4650",
+      "executable": false
+    },
+    "skills/tidewave-integration/references/tool-examples.md": {
+      "sha256": "6dc0da2046b310adc535378ec59ddc8bc7ccbc5b2b6020b3ba3833bf734081f6",
+      "executable": false
+    },
+    "skills/tidewave-integration/references/validation-checklist.md": {
+      "sha256": "defe05e5fc70968b1d5f4edf864553c0154ca3fa95402654acb449c64a1d8b63",
+      "executable": false
+    }
+  }
+}

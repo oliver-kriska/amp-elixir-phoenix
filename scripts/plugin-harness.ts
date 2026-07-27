@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict'
-import { cpSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs'
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -15,9 +22,16 @@ const installedSkills = join(
   '.agents',
   'skills',
 )
+const outsideWorkspace = mkdtempSync(join(tmpdir(), 'amp-elixir-phoenix-outside-'))
 mkdirSync(join(workspace, '.agents'), { recursive: true })
 cpSync(resolve(skillsPath), installedSkills, { recursive: true })
-process.on('exit', () => rmSync(workspace, { recursive: true, force: true }))
+mkdirSync(join(workspace, 'lib', 'app'), { recursive: true })
+symlinkSync(outsideWorkspace, join(workspace, 'lib', 'app', 'outside-link'), 'dir')
+writeFileSync(join(outsideWorkspace, 'existing.ex'), 'defmodule Existing do\nend\n')
+process.on('exit', () => {
+  rmSync(workspace, { recursive: true, force: true })
+  rmSync(outsideWorkspace, { recursive: true, force: true })
+})
 
 const { default: plugin } = await import(pathToFileURL(pluginPath).href)
 
@@ -168,6 +182,44 @@ assert.equal(
   ).action,
   'reject-and-continue',
 )
+const symlinkEdit = resolve(workspace, 'lib/app/outside-link/file.ex')
+assert.equal(
+  (
+    await toolCall({
+      tool: 'edit_file',
+      input: { modified: [symlinkEdit] },
+    })
+  ).action,
+  'reject-and-continue',
+  'an allowed directory must not escape through a symlink',
+)
+const existingSymlinkEdit = resolve(
+  workspace,
+  'lib/app/outside-link/existing.ex',
+)
+assert.equal(
+  (
+    await toolCall({
+      tool: 'edit_file',
+      input: { modified: [existingSymlinkEdit] },
+    })
+  ).action,
+  'reject-and-continue',
+  'an existing target reached through a symlink must be blocked',
+)
+config = {
+  elixirPhoenixEditLock: { mode: 'paths', paths: ['lib/app/outside-link'] },
+}
+assert.equal(
+  (
+    await toolCall({
+      tool: 'edit_file',
+      input: { modified: [symlinkEdit] },
+    })
+  ).action,
+  'reject-and-continue',
+  'an allowed prefix that is a symlink outside the workspace must fail closed',
+)
 config = {
   elixirPhoenixEditLock: { mode: 'paths', paths: ['../outside-workspace'] },
 }
@@ -269,6 +321,41 @@ assert.deepEqual(
 
 const phxFull = commands.get('elixir-phoenix-phx-full')!
 const agentEnd = handlers.get('agent.end')!
+const nativeCommandIDs = new Set([
+  'elixir-phoenix-clear-pending-workflow',
+  'elixir-phoenix-specialist',
+  'elixir-phoenix-parallel-review',
+  'elixir-phoenix-parallel-investigate',
+  'elixir-phoenix-edit-lock',
+])
+const workflowCommands = [...commands.entries()].filter(
+  ([id]) => !nativeCommandIDs.has(id),
+)
+assert.equal(workflowCommands.length, 40)
+for (const [id, handler] of workflowCommands) {
+  const skillName = id.replace(/^elixir-phoenix-/, '')
+  const threadID = `T-workflow-${skillName}`
+  const workflowContext = context(threadID)
+  await handler(workflowContext)
+  const start = await agentStart({ thread: { id: threadID } }, workflowContext)
+  assert.match(
+    start.message.content,
+    new RegExp(`<explicit-skill name="${skillName}">`),
+    `${id} must inject its matching installed skill`,
+  )
+  assert.deepEqual(
+    await agentStart({ thread: { id: threadID } }, workflowContext),
+    {},
+    `${id} must be consumed after one turn`,
+  )
+  if (skillName === 'phx-full') {
+    await agentEnd(
+      { thread: { id: threadID }, status: 'cancelled', messages: [] },
+      workflowContext,
+    )
+  }
+}
+
 const armFull = async (id: string) => {
   const ctx = context(id)
   await phxFull(ctx)
@@ -289,6 +376,18 @@ const verify = (command: string, exitCode: unknown) => ({
     status: 'done',
     output: exitCode === undefined ? {} : { exitCode },
   },
+})
+const runningVerify = (command: string, pid: number) => ({
+  call: { tool: 'shell_command', input: { command } },
+  result: { status: 'done', output: { running: true, pid } },
+})
+const verificationStatus = (pid: number, exitCode: number) => ({
+  call: { tool: 'shell_command_status', input: { pid } },
+  result: { status: 'done', output: { running: false, exitCode } },
+})
+const runningVerificationStatus = (pid: number) => ({
+  call: { tool: 'shell_command_status', input: { pid } },
+  result: { status: 'done', output: { running: true } },
 })
 
 let ctx = await armFull('T-before-edit')
@@ -381,6 +480,75 @@ result = await agentEnd(
 )
 assert.equal(result, undefined, 'gate must use only one continuation')
 assert.ok(notices.some((message) => message.includes('stopped incomplete')))
+
+ctx = await armFull('T-background-success')
+result = await agentEnd(
+  {
+    thread: { id: 'T-background-success' },
+    status: 'done',
+    messages: [
+      edit,
+      runningVerify('mix test', 4101),
+      verificationStatus(4101, 0),
+    ],
+  },
+  ctx,
+)
+assert.equal(result, undefined, 'a successful polled verification should pass')
+
+ctx = await armFull('T-background-failure')
+result = await agentEnd(
+  {
+    thread: { id: 'T-background-failure' },
+    status: 'done',
+    messages: [
+      edit,
+      runningVerify('mix test', 4102),
+      verificationStatus(4102, 1),
+    ],
+  },
+  ctx,
+)
+assert.equal(result.action, 'continue', 'a failed polled verification must not pass')
+
+ctx = await armFull('T-background-unrelated-pid')
+result = await agentEnd(
+  {
+    thread: { id: 'T-background-unrelated-pid' },
+    status: 'done',
+    messages: [
+      edit,
+      runningVerify('mix test', 4104),
+      verificationStatus(9999, 0),
+      runningVerificationStatus(4104),
+    ],
+  },
+  ctx,
+)
+assert.equal(
+  result.action,
+  'continue',
+  'a successful status for an unrelated PID must not pass',
+)
+
+ctx = await armFull('T-background-before-edit')
+result = await agentEnd(
+  {
+    thread: { id: 'T-background-before-edit' },
+    status: 'done',
+    messages: [
+      runningVerify('mix test', 4103),
+      edit,
+      verificationStatus(4103, 0),
+    ],
+  },
+  ctx,
+)
+assert.equal(
+  result.action,
+  'continue',
+  'an edit must invalidate an earlier pending verification',
+)
 
 ctx = await armFull('T-cancelled')
 assert.equal(

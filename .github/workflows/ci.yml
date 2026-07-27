@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
     name: Lint and behavior tests
@@ -55,10 +59,44 @@ jobs:
             agent.start \
             --data '{"thread":{"id":"T-00000000-0000-0000-0000-000000000000"},"message":"native load smoke","id":"native-load"}'
 
-  publish-check:
-    name: Verify published raw plugin
+  promote:
+    name: Promote validated distribution
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [quality, amp-runtime]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Promote stable to the validated commit
+        run: |
+          remote_main="$(git ls-remote --exit-code origin refs/heads/main | awk '{print $1}')"
+          if [ "$remote_main" != "$GITHUB_SHA" ]; then
+            echo "Refusing stale promotion: main is $remote_main, validated $GITHUB_SHA" >&2
+            exit 1
+          fi
+
+          expected_stable="$(git ls-remote origin refs/heads/stable | awk '{print $1}')"
+          remote_main="$(git ls-remote --exit-code origin refs/heads/main | awk '{print $1}')"
+          if [ "$remote_main" != "$GITHUB_SHA" ]; then
+            echo "Refusing stale promotion: main changed to $remote_main" >&2
+            exit 1
+          fi
+
+          git push \
+            --force-with-lease="refs/heads/stable:${expected_stable}" \
+            origin "${GITHUB_SHA}:refs/heads/stable"
+
+  publish-check:
+    name: Verify promoted raw plugin
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [promote]
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -67,9 +105,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Compare the published artifact
-        env:
-          RAW_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/plugins/elixir-phoenix.ts
         run: |
+          stable_sha="$(git ls-remote --exit-code origin refs/heads/stable | awk '{print $1}')"
+          if [ "$stable_sha" != "$GITHUB_SHA" ]; then
+            echo "stable is $stable_sha, expected $GITHUB_SHA" >&2
+            exit 1
+          fi
+
+          raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${stable_sha}/plugins/elixir-phoenix.ts"
           curl --fail --silent --show-error --location \
             --retry 5 --retry-all-errors \
-            "$RAW_URL" | cmp - plugins/elixir-phoenix.ts
+            "$raw_url" | cmp - plugins/elixir-phoenix.ts

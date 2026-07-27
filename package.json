@@ -6,10 +6,12 @@
   "description": "Elixir and Phoenix workflow skills, palette commands, and specialists for Amp",
   "scripts": {
     "lint": "markdownlint \"README.md\" \"skills/**/*.md\"",
+    "manifest:check": "node scripts/generate-manifest.mjs --check",
+    "manifest:update": "node scripts/generate-manifest.mjs",
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/verify-distribution.mjs",
     "test:plugin": "tsx scripts/plugin-harness.ts plugins/elixir-phoenix.ts skills",
-    "test": "npm run verify && npm run typecheck && npm run test:plugin && npm run lint"
+    "test": "npm run manifest:check && npm run verify && npm run typecheck && npm run test:plugin && npm run lint"
   },
   "devDependencies": {
     "@ampcode/plugin": "0.0.0-20260726003151-g56c26ca",

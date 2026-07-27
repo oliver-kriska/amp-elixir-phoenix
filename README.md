@@ -18,13 +18,15 @@ workflows:
 
 ```bash
 amp skill add \
-  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/main/skills \
+  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/stable/skills \
   --target "$PWD/.agents/skills"
 
 mkdir -p .amp/plugins
+plugin=".amp/plugins/elixir-phoenix.ts"
+temporary="$(mktemp "${plugin}.XXXXXX")"
 curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
-  --output .amp/plugins/elixir-phoenix.ts
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
+  --output "$temporary" && mv "$temporary" "$plugin"
 ```
 
 Project-local installation is recommended because the guidance is intentionally
@@ -37,13 +39,15 @@ Use a global installation only when most of your Amp work is Elixir/Phoenix:
 
 ```bash
 amp skill add \
-  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/main/skills \
+  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/stable/skills \
   --global
 
 mkdir -p "$HOME/.config/amp/plugins"
+plugin="$HOME/.config/amp/plugins/elixir-phoenix.ts"
+temporary="$(mktemp "${plugin}.XXXXXX")"
 curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
-  --output "$HOME/.config/amp/plugins/elixir-phoenix.ts"
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
+  --output "$temporary" && mv "$temporary" "$plugin"
 ```
 
 Amp installs global skills under `~/.config/agents/skills/` and system plugins
@@ -147,7 +151,7 @@ Skills are copied at installation time. Update them explicitly:
 
 ```bash
 amp skill add \
-  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/main/skills \
+  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/stable/skills \
   --target "$PWD/.agents/skills" \
   --overwrite
 ```
@@ -156,9 +160,11 @@ Use `--global --overwrite` instead for a global skill update. Update a
 project-local plugin by downloading the current file again:
 
 ```bash
+plugin=".amp/plugins/elixir-phoenix.ts"
+temporary="$(mktemp "${plugin}.XXXXXX")"
 curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/main/plugins/elixir-phoenix.ts \
-  --output .amp/plugins/elixir-phoenix.ts
+  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
+  --output "$temporary" && mv "$temporary" "$plugin"
 ```
 
 Use the global output path from the installation section for a global plugin
@@ -180,6 +186,8 @@ The repository intentionally contains generated distribution artifacts. Make
 behavior changes in the
 [source repository](https://github.com/oliver-kriska/claude-elixir-phoenix),
 regenerate the Amp target there, and then publish that target here.
+Run `npm run manifest:update` whenever generated plugin or skill artifacts
+change; CI rejects missing, unexpected, modified, or mode-drifted artifacts.
 
 Local verification does not invoke paid models:
 
@@ -188,12 +196,13 @@ npm ci
 npm test
 ```
 
-CI validates all 51 skill frontmatter blocks and bundled resources, type-checks
+CI validates the exact manifest for all 51 skills and bundled resources, type-checks
 the plugin against `@ampcode/plugin`, exercises command/specialist/lock/gate
 behavior, lints Markdown, audits dependencies, and loads the plugin with the
-latest Amp CLI. Every green push to `main` is immediately installable through
-GitHub's raw URL; a final delivery job compares that published artifact with the
-committed plugin.
+latest Amp CLI. Only a green push to `main` promotes the exact validated commit
+to the `stable` distribution branch; a final delivery job compares that
+promoted raw artifact with the validated plugin. Failed commits on `main` are
+never exposed through the documented installation URLs.
 
 ## License
 
