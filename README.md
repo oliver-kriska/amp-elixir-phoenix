@@ -4,14 +4,30 @@
 
 Deterministic Elixir, Phoenix, LiveView, Ecto, Oban, testing, and security
 workflows for [Amp](https://ampcode.com/). This distribution combines 51 Agent
-Skills with one Amp plugin that exposes explicit command-palette workflows,
+Skills with one Amp plugin that exposes 40 paired-local workflow wrappers,
 read-only specialists, bounded parallel analysis, and lifecycle safety guards.
 
 This repository is the installable Amp distribution generated from
 [`oliver-kriska/claude-elixir-phoenix`](https://github.com/oliver-kriska/claude-elixir-phoenix),
 which remains the canonical source and contribution repository.
 
-## Install in one project
+## Choose a profile
+
+- **Hosted-native:** publish skills and the plugin independently to Amp personal
+  or workspace repositories, skills first. Use native `skill: invoke` for
+  deterministic skill loading. Specialists, parallel commands, and edit lock
+  work, but filesystem wrappers cannot load hosted-only skill bodies and native
+  `phx-full` does not arm the plugin gate.
+- **Paired-full:** install matching skills and plugin locally. Native
+  `skill: invoke` works, and all 40 wrappers can inject the paired skill. The
+  paired `phx: full` wrapper also activates the bounded verification gate.
+
+Personal and workspace hosted repositories are account scopes. They are not the
+same as `amp skill add --global`, which installs a machine-local copy. Keep the
+GitHub/curl path below for pinned, reproducible, and backward-compatible
+installation.
+
+## Install paired-full in one project
 
 Run these commands from the Elixir/Phoenix project where Amp should use the
 workflows:
@@ -33,9 +49,10 @@ Project-local installation is recommended because the guidance is intentionally
 opinionated. Decide independently whether your team should commit
 `.agents/skills/` and `.amp/plugins/elixir-phoenix.ts`.
 
-## Install globally
+## Install paired-full on one machine
 
-Use a global installation only when most of your Amp work is Elixir/Phoenix:
+Use a machine-local installation only when most of your work on that computer is
+Elixir/Phoenix:
 
 ```bash
 amp skill add \
@@ -50,8 +67,9 @@ curl --fail --silent --show-error --location \
   --output "$temporary" && mv "$temporary" "$plugin"
 ```
 
-Amp installs global skills under `~/.config/agents/skills/` and system plugins
-under `~/.config/amp/plugins/`.
+Amp installs machine-local skills under `~/.config/agents/skills/` and system
+plugins under `~/.config/amp/plugins/`. These copies do not follow your Amp
+account to another machine or orb.
 
 Amp currently restricts `amp plugins add` and directive-based auto-updates to
 Amp-hosted plugins, so third-party GitHub plugins must be downloaded directly.
@@ -63,24 +81,25 @@ code before running it.
 Start a fresh Amp process from the target project, then run:
 
 ```bash
-amp skill list
+amp skills list --json
 amp plugins list
 ```
 
 The skill list should include entries such as `phx-investigate`, `phx-review`,
-`testing`, and `liveview-patterns`. The plugin list should include
-`elixir-phoenix.ts`.
+`testing`, and `liveview-patterns`. Inspect `baseDir` and `source` to confirm the
+intended copy won. The plugin list should include `elixir-phoenix.ts`.
 
-Open Amp's command palette with <kbd>Ctrl</kbd>+<kbd>O</kbd>. Choose a workflow
-such as **phx: investigate** or **phx: review**, then send the task in your next
-prompt. The plugin injects that installed skill for exactly one turn, so its use
-does not depend on model-driven skill selection.
+Open Amp's command palette with <kbd>Ctrl</kbd>+<kbd>O</kbd>, run
+`skill: invoke`, choose `phx-investigate` or `phx-review`, and send the task in
+your next prompt. This native path resolves local, built-in, personal hosted,
+and workspace hosted skills. A paired-full install also exposes wrappers such
+as **phx: investigate** and **phx: review**.
 
 ## What is included
 
-### 45 deterministic palette commands
+### 40 paired-local workflow wrappers
 
-The plugin exposes 40 existing workflows plus five native controls:
+The plugin exposes 40 workflow wrappers plus five native controls:
 
 - `phx: clear pending workflow`
 - `phx: specialist`
@@ -126,16 +145,24 @@ Shell tools are disabled while locked because arbitrary shell commands cannot
 be proven read-only. Corrupt, unreadable, or workspace-escaping lock state
 fails closed.
 
-When `phx: full` is explicitly armed, the plugin observes recognized edits and
-requires a later Elixir verification command with exit code exactly zero. A
-missing check gets one bounded continuation rather than an unbounded loop.
-Piped, chained, echoed, neutralized, or pre-edit checks do not satisfy the
-gate. `mix format --check-formatted` is a check; plain `mix format` is not.
+Only the paired-full `phx: full` wrapper arms the plugin gate. The plugin then
+observes recognized edits and requires a later Elixir verification command with
+exit code exactly zero. A missing check gets one bounded continuation rather
+than an unbounded loop. Piped, chained, echoed, neutralized, or pre-edit checks
+do not satisfy the gate. `mix format --check-formatted` is a check; plain
+`mix format` is not. Native `skill: invoke` → `phx-full` follows the skill's
+verification instructions but does not execute this wrapper hook.
 
 ## Boundaries
 
 - This is not complete Claude Code hook or agent parity. Five of 26 canonical
   specialists are ported.
+- Amp's Plugin API does not expose effective skill resolution, programmatic
+  skill invocation, or the original nested invocation directory. Wrappers can
+  resolve only supported machine-local roots and `.agents/skills` or
+  `.claude/skills` from exposed `workspaceRoot` through its parents. Use native
+  `skill: invoke` for hosted-only, built-in, plugin-cache, custom-path, or
+  unexposed nested skills.
 - Edit enforcement covers tools Amp's file-modification classifier recognizes.
   Unknown third-party mutating tools remain outside that boundary.
 - Tidewave and other MCP servers remain project-specific configuration.
@@ -156,7 +183,7 @@ amp skill add \
   --overwrite
 ```
 
-Use `--global --overwrite` instead for a global skill update. Update a
+Use `--global --overwrite` instead for a machine-local skill update. Update a
 project-local plugin by downloading the current file again:
 
 ```bash
@@ -167,9 +194,9 @@ curl --fail --silent --show-error --location \
   --output "$temporary" && mv "$temporary" "$plugin"
 ```
 
-Use the global output path from the installation section for a global plugin
-update. Native third-party auto-update can replace this manual step if Amp
-opens that capability in the future.
+Use the machine-local output path from the installation section for a system
+plugin update. Native third-party auto-update can replace this manual step if
+Amp opens that capability in the future.
 
 Remove a workspace plugin with:
 
@@ -188,6 +215,12 @@ behavior changes in the
 regenerate the Amp target there, and then publish that target here.
 Run `npm run manifest:update` whenever generated plugin or skill artifacts
 change; CI rejects missing, unexpected, modified, or mode-drifted artifacts.
+
+The snapshot in this branch was generated from canonical commit
+`e5b8b6d1dab928657f09f99d3ef99c57bc014452`. The distribution manifest records
+the SHA-256 and executable bit for every generated artifact. The review PR also
+records the standalone commit and aggregate hashes so the projection can be
+audited before merge or `stable` promotion.
 
 Local verification does not invoke paid models:
 

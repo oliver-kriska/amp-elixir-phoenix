@@ -3,7 +3,7 @@
   "source": "https://github.com/oliver-kriska/claude-elixir-phoenix",
   "files": {
     "plugins/elixir-phoenix.ts": {
-      "sha256": "8c704fa43e60474d8902ce80ea4965e3bd0dfb3fa5df1b58db961cfad978c871",
+      "sha256": "84c856969881af3e75d0f62cd889d42c8c766c3bbaf902f1f761c25aaac1055c",
       "executable": false
     },
     "skills/ash-framework/SKILL.md": {
@@ -699,7 +699,7 @@
       "executable": false
     },
     "skills/phx-init/SKILL.md": {
-      "sha256": "4a62ad125cc5362791b832271890bfb45047d3e67ec4966a91b9a7b539718e27",
+      "sha256": "d1138345a88e4983644ca0a4fab87511a1618e649b99a73f7c61c16f4e57d0d2",
       "executable": false
     },
     "skills/phx-init/references/codex-review-guidelines.md": {
@@ -707,7 +707,7 @@
       "executable": false
     },
     "skills/phx-init/references/injectable-template.md": {
-      "sha256": "b976dc7d54e9a2623a32e45b8bef046744a5117424bddfb59c63c2c937ff076b",
+      "sha256": "fdc5be09e5217870f4b22736080cb53355921d909ddd4643c683a3d2ab585bee",
       "executable": false
     },
     "skills/phx-intro/SKILL.md": {
@@ -715,7 +715,7 @@
       "executable": false
     },
     "skills/phx-intro/references/tutorial-content.md": {
-      "sha256": "e442515ac3a5e7d7f9ef88f7f578834ef419778260ffcd0ba7d4fbda62cb5fbb",
+      "sha256": "0f766ca79a01616c1c67294b815e4fffad7a7f0466ed1e1d994b879fd4d5ee38",
       "executable": false
     },
     "skills/phx-investigate/SKILL.md": {

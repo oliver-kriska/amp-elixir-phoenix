@@ -14,7 +14,7 @@
     "test": "npm run manifest:check && npm run verify && npm run typecheck && npm run test:plugin && npm run lint"
   },
   "devDependencies": {
-    "@ampcode/plugin": "0.0.0-20260726003151-g56c26ca",
+    "@ampcode/plugin": "0.0.0-20260811001717-g1583b94",
     "@types/node": "26.1.1",
     "markdownlint-cli": "0.49.1",
     "tsx": "4.23.1",
