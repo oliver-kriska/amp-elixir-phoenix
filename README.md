@@ -217,7 +217,7 @@ Run `npm run manifest:update` whenever generated plugin or skill artifacts
 change; CI rejects missing, unexpected, modified, or mode-drifted artifacts.
 
 The snapshot in this branch was generated from canonical commit
-`e5b8b6d1dab928657f09f99d3ef99c57bc014452`. The distribution manifest records
+`3ea78b0fbae186840121aace789e86fe70e361dc`. The distribution manifest records
 the SHA-256 and executable bit for every generated artifact. The review PR also
 records the standalone commit and aggregate hashes so the projection can be
 audited before merge or `stable` promotion.

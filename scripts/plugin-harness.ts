@@ -143,6 +143,15 @@ assert.ok(
       JSON.stringify(['Read', 'finder']),
   ),
 )
+assert.ok(
+  agents
+    .slice(0, 5)
+    .every((agent) =>
+      agent.definition.instructions.startsWith(
+        '# Amp read-only specialist contract\n\n',
+      ),
+    ),
+)
 
 const toolCall = handlers.get('tool.call')!
 const allowedEdit = resolve(workspace, 'lib/app/file.ex')

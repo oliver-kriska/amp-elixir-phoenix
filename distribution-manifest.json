@@ -3,7 +3,7 @@
   "source": "https://github.com/oliver-kriska/claude-elixir-phoenix",
   "files": {
     "plugins/elixir-phoenix.ts": {
-      "sha256": "84c856969881af3e75d0f62cd889d42c8c766c3bbaf902f1f761c25aaac1055c",
+      "sha256": "6f419491670fcf21a58268b0e9b628001fa7220b670688f5dfaa6578fd78d832",
       "executable": false
     },
     "skills/ash-framework/SKILL.md": {
