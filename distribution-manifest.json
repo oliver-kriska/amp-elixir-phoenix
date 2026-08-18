@@ -6,6 +6,10 @@
       "sha256": "8c704fa43e60474d8902ce80ea4965e3bd0dfb3fa5df1b58db961cfad978c871",
       "executable": false
     },
+    "plugins/phx-watch-pr.ts": {
+      "sha256": "570efa1da37df734b7e92accfda1f286021afe8bf80caa7346f6e846b0938a47",
+      "executable": false
+    },
     "skills/ash-framework/SKILL.md": {
       "sha256": "554fd3624382812563a0ad909e4a643b3443479c4ea570eae843cd0b95540cef",
       "executable": false
@@ -667,7 +671,7 @@
       "executable": false
     },
     "skills/phx-freeze/SKILL.md": {
-      "sha256": "ffcfbb85e851447f489ae53c5e5a46f01854e9f88f046e88b5e300fbf47eabd8",
+      "sha256": "911e50c9c0f44fa5a52998303f2192cfa6b8ab1141de8109ea43111f362213e1",
       "executable": false
     },
     "skills/phx-full/SKILL.md": {
@@ -699,7 +703,7 @@
       "executable": false
     },
     "skills/phx-init/SKILL.md": {
-      "sha256": "4a62ad125cc5362791b832271890bfb45047d3e67ec4966a91b9a7b539718e27",
+      "sha256": "d1138345a88e4983644ca0a4fab87511a1618e649b99a73f7c61c16f4e57d0d2",
       "executable": false
     },
     "skills/phx-init/references/codex-review-guidelines.md": {
@@ -707,7 +711,7 @@
       "executable": false
     },
     "skills/phx-init/references/injectable-template.md": {
-      "sha256": "b976dc7d54e9a2623a32e45b8bef046744a5117424bddfb59c63c2c937ff076b",
+      "sha256": "fdc5be09e5217870f4b22736080cb53355921d909ddd4643c683a3d2ab585bee",
       "executable": false
     },
     "skills/phx-intro/SKILL.md": {
@@ -715,11 +719,11 @@
       "executable": false
     },
     "skills/phx-intro/references/tutorial-content.md": {
-      "sha256": "e442515ac3a5e7d7f9ef88f7f578834ef419778260ffcd0ba7d4fbda62cb5fbb",
+      "sha256": "0f766ca79a01616c1c67294b815e4fffad7a7f0466ed1e1d994b879fd4d5ee38",
       "executable": false
     },
     "skills/phx-investigate/SKILL.md": {
-      "sha256": "ccb072d53d211d6f43e60c2e112177f34a3db9d55c84a6e7210a9db3d7354f05",
+      "sha256": "d4fe74b6ebce71c828a8f45d8d16542d056cd2cb25ae23ac7113e7fce6485b3a",
       "executable": false
     },
     "skills/phx-investigate/references/debug-commands.md": {
@@ -843,7 +847,7 @@
       "executable": false
     },
     "skills/phx-review/SKILL.md": {
-      "sha256": "5a6dd10d690655e9f0073d5e0697272f9e1cd3ccbacd320fdc2e9a655f6a09b6",
+      "sha256": "9ee3711a541661288795e7333cae68cdd8744f1727c07ef890ab898e0c899e5f",
       "executable": false
     },
     "skills/phx-review/references/agent-spawning.md": {
@@ -907,16 +911,12 @@
       "executable": false
     },
     "skills/phx-watch-pr/SKILL.md": {
-      "sha256": "17e34768fd1243ab0b61c94d21a7dc3a97dd7d8192c897956de5ea4375af4dcc",
+      "sha256": "e9f78dbce9e0033735bda0e4208e2c7274314d61685125cbbd913e3bf8c1371d",
       "executable": false
     },
     "skills/phx-watch-pr/references/watcher-mechanics.md": {
-      "sha256": "97e3ac60c6b5f06bc530f2c9f2f747d4a971769353866cb555ff4bcf402623e1",
+      "sha256": "352ffa8f9f2b957457b811139ae12bb88a9e313616fe3e97f417a8ef85b0036a",
       "executable": false
-    },
-    "skills/phx-watch-pr/scripts/watch-pr.sh": {
-      "sha256": "31de58ce8736a7845cf035ed842c65326cb8750e0a40c9a93ea8d87498b62a18",
-      "executable": true
     },
     "skills/phx-work/SKILL.md": {
       "sha256": "ba15c7b630398320f9721814ccd1e7493f8df8c0ab57a24d9f581223b5310e6c",

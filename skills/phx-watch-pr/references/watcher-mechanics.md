@@ -1,108 +1,110 @@
-# Watcher Mechanics — Why Background Events Beat Polling
+# Amp Watcher Mechanics
 
-## The cost problem with hand-rolled loops
+## Lifecycle
 
-A foreground `while true; sleep 120; gh api ...` loop is the worst design
-on both axes:
+The generated plugin owns the lifecycle rather than a shell process:
 
-1. **Context burn** — every poll's `gh` JSON lands in the transcript.
-   30 polls × full dumps = tens of KB of context for "nothing changed yet."
-2. **Cache burn** — between-turn waits longer than the prompt-cache TTL
-   (5 min default) force a full uncached context reload on the next turn:
-   the ~35–55K-token prefix re-writes at 1.25×–2× instead of re-reading
-   at 0.1×. A 300s interval lands exactly on the eviction boundary — the
-   single worst choice. Under ~270s keeps the cache warm; anything longer
-   should commit to 1200s+ so the reload price is paid once, not per poll.
+```text
+start → validate PR → acquire keep-alive → persist snapshot → poll quietly
+  ├─ required CI/reviews pending ───────────────────────────────┐
+  ├─ actionable failure/feedback → deduplicated event/fix turn ──┤
+  ├─ routine progress/activity → reset quiet, no model turn ─────┤
+  ├─ ready → 15-minute activity quiet window → release → success│
+  ├─ timeout/API error/closed/manual stop → release → incomplete│
+  └─ plugin reload → release old lease → recover state/lease ───┘
+```
 
-The cheapest design pays the reload price ZERO times while idle: Claude
-takes no turns at all between events. The script polls in its own process;
-Claude's context is untouched until a real event arrives.
+Amp's normal inactivity pause is about five minutes. The default 15-minute
+quiet period covers delayed check-backed and account-level reviews while the
+lease—not an active model turn—keeps the Orb awake. A 60-second poll is
+responsive without paying for model inference on unchanged state. The 2-hour
+cap covers normal CI/review latency while limiting one HIGH worker to two
+Orb-hours; raise it only when a known slow pipeline justifies the added cost.
 
-## Mechanism comparison
+All three values are configurable per watch within bounded ranges:
 
-| Mechanism | Idle token cost | Notes |
-|-----------|----------------|-------|
-| Foreground bash loop | Worst — every poll in context | Reject |
-| **Monitor tool** (v2.1.98+) | ≈0 — streams filtered event lines | **Preferred.** Purpose-built: background script, each stdout line returns as an event. Not available on Bedrock/Vertex/Foundry |
-| Bash `run_in_background` | ≈0 — Claude re-invoked when the script exits | Portable fallback; one shot per launch (exit-on-first-terminal-event) |
-| `/loop` + ScheduleWakeup | One full turn per wake (context reload each time) | Fallback only; clamped to [60s, 3600s]; Anthropic's own docs note dynamic /loop may switch to Monitor because it's cheaper |
+| Setting | Default | Range | Tradeoff |
+| --- | ---: | ---: | --- |
+| Poll interval | 60 seconds | 30–300 seconds | Faster response versus more GitHub API traffic |
+| Quiet period | 15 minutes | 5–60 minutes | Catch delayed reviews versus extra Orb runtime after readiness |
+| Active duration | 2 hours | 0.5–24 hours | Slow-pipeline reliability versus a hard billing ceiling |
 
-Anthropic's scheduled-tasks doc states this directly: Monitor "avoids
-polling altogether and is often more token-efficient and responsive than
-re-running a prompt on an interval."
+## Durable and Idempotent Processing
 
-## Watcher contract (what watch-pr.sh implements)
+Workspace Amp configuration stores watch identity, bound thread ID, options,
+deadline, latest head SHA, normalized check/thread snapshot hashes, pending fix
+event hash, and recent webhook IDs. Reload recovery reacquires a lease only for
+an active, unexpired watch. Amp dispose releases all process-owned leases;
+process exit also ends them server-side.
 
-- **Inputs**: PR number, dimensions (`reviews,comments,checks`), env
-  overrides `WATCH_INTERVAL` (default 30s), `WATCH_MAX_DURATION` (3600s),
-  `WATCH_BASELINE_TS`, `WATCH_DELTA_FILE`
-- **One `gh pr view --json` per cycle** covers state, reviews, comments,
-  and checks — cheaper than four REST calls, and the JSON never reaches
-  Claude's context
-- **Events**: one stdout line + one JSONL row in
-  `.claude/watch/pr-{n}.jsonl` per genuinely-new item (dedup via seen-ID
-  tracking, baseline timestamp filters out pre-existing reviews)
-- **Terminal lines (silence ≠ success)**: `merged`, `pr_closed`,
-  `watchdog` (max duration), `watch_error` (5 consecutive gh failures —
-  don't loop forever on a dead token)
+Snapshot and fix markers are written into appended user messages. Before an
+append, the plugin scans recent full-thread messages for the marker. This makes
+the append idempotent across a crash between the thread side effect and the
+configuration update. `--fix` has one in-memory turn runner per PR, while its
+pending and in-flight hashes remain durable. Failed or cancelled required CI
+and unresolved threads share one actionable hash, so unchanged failures do not
+queue duplicate turns and new evidence waits for the current turn to finish.
 
-## Codex mode (`--codex`)
+## Readiness Contract
 
-Verified against the ChatGPT Codex GitHub connector (2026-07-03,
-reaction landing spots re-verified live 2026-07-10):
+`gh pr checks --required --json` is the source of required checks. Older GitHub
+CLI versions fall back to its non-interactive tabular output. Buckets `pass`
+and `skipping` are green; `pending`, `fail`, and `cancel` are not.
 
-- **Trigger**: PR going ready auto-registers a review (codex reacts 👀 on
-  the PR BODY — no comment needed), or comment `@codex review`. Pushing
-  commits does NOT re-trigger — rounds after the first need a fresh
-  trigger comment. The skill's preflight checks the PR body's bot
-  reactions since the head commit and SKIPS posting when a review is
-  already in flight (👀) or already clean (👍).
-- **Signals**: 👀 reaction = codex acknowledged and is reviewing;
-  👍 reaction = clean pass. A clean pass can ALSO arrive as a bot
-  COMMENT — `Codex Review: Didn't find any major issues` with
-  `Reviewed commit: {sha}` (confirmed live on a comment-triggered
-  round); the watcher classifies it as `codex_clean`, and other bot
-  comments containing "Codex Review" as `codex_review`. Auto-triggered
-  reviews react on the PR body (confirmed live); comment-triggered
-  rounds react on the trigger comment — the watcher polls both, with
-  PR-level reactions time-filtered by `WATCH_CODEX_SINCE` so stale
-  👀/👍 from earlier rounds or pushes can't fire spurious events.
-- **Freshness anchor**: the `Reviewed commit: {sha}` marker beats every
-  timestamp comparison — commit committer dates are client-set and skew
-  (observed live: a clean comment predating its reviewed commit's
-  committer date by 9 minutes). Compare shas when available; use
-  reaction timestamps only as the in-flight heuristic.
-- **Review arrival**: a PR review headed `### 💡 Codex Review` with
-  `Reviewed commit: <sha>` — detected via body marker, not bot login
-  (login differs per endpoint: `chatgpt-codex-connector[bot]` vs Bot type).
-- **Latency**: 14–18 min per round on large PRs → `--codex` raises
-  MAX_DURATION to 7200s. `codex_timeout` fires if no 👀 within 300s
-  (`CODEX_ACK_TIMEOUT`) — the repo probably lacks the connector; the watch
-  continues as a plain watch.
-- **Round bookkeeping lives in the skill, not the script**: one watcher
-  per round. After fixes are pushed, the skill posts a new `@codex review`,
-  captures the new comment id, and restarts the watcher with
-  `WATCH_CODEX_TRIGGER_ID=<new id>`. Rounds are capped (default 3) —
-  each round consumes Codex cloud quota.
-- **Env contract**: `WATCH_CODEX=1`; `WATCH_CODEX_TRIGGER_ID` (empty =
-  auto-registered mode: PR-level reactions only); `WATCH_CODEX_SINCE`
-  (ISO-8601 floor for PR-level reactions — head-commit time in
-  auto-registered mode, defaults to watcher baseline otherwise);
-  `CODEX_ACK_TIMEOUT` (default 300). At most two extra REST calls per
-  30s tick (~240 req/hr) — still trivial against the 5,000/hr budget.
+Names and workflows matching deployment, deployments, deploy, release,
+preview, production, or prod are removed from readiness and retained in a
+separate excluded list. Optional non-deployment checks are not promoted to
+required checks. A draft PR is not ready. Every unresolved GitHub review
+thread—including outdated but unresolved threads—is actionable until the
+`phx-pr-review` turn validates and resolves or rejects it.
 
-## Rate limits
+Do not treat the first green snapshot as ready. For example, Enaia starts
+`Static checks`, `Design-system lifecycle`, `check_gettext`,
+`migration_check`, `check_dialyzer`, `test`, `Integration tests`,
+`Playwright E2E tests`, `Codex PR Review`, and aggregate `All checks`, while an
+account-level Codex review may arrive later without its own check. Each current
+head SHA change, required-check transition, review-thread change, top-level PR
+comment, and submitted review resets the 15-minute quiet clock. Jobs such as
+`deploy_branch`, `deploy_staging`, `draft_release`, and `tag_version` remain
+excluded and do not reset it.
 
-30s cadence on a single PR is trivially within the 5,000 req/hr
-authenticated budget. For multi-PR watching, the REST comments endpoint
-supports conditional requests (`curl --etag-save/--etag-compare`) where
-304 responses cost zero rate-limit points — GraphQL (`gh pr view`) does
-not support ETags. Deferred until actually needed.
+Polling and stabilization do not imply a model turn. Pending/passing required
+check transitions, head pushes, submitted reviews without an unresolved
+thread, and top-level comments reset the quiet clock but remain
+inference-silent. Deployment-like transitions are even quieter: they are
+persisted and reported by explicit status and terminal summaries, but neither
+reset the clock nor append a message. Only failed/cancelled required checks,
+unresolved threads, and terminal outcomes wake the model.
 
-## CI-only watching
+With `--fix`, actionable evidence is appended to the same serialized worker
+thread with check names/links and unresolved-thread details. The turn may
+inspect logs, fix branch-owned causes, verify, and push the authorized branch;
+it must not blindly rerun shared CI, merge, or deploy. Without `--fix`, the
+same evidence is reported once for inspection rather than repaired.
 
-`gh pr checks {n} --watch --fail-fast --interval 10` already blocks until
-all checks finish and exits with `0` = pass, `1` = fail, `8` = pending.
-For "I just pushed, tell me when CI is green/red" there is nothing to
-build — wrap it in `run_in_background` and the exit IS the signal.
-`gh run watch {run-id}` is the equivalent for a single Actions run.
+Review-thread GraphQL pagination is bounded at 1,000 threads. Exceeding that
+bound or receiving malformed/incomplete API data is a polling error, never a
+false green result. Five consecutive polling errors terminate incomplete and
+release the lease.
+
+## Durable Webhook Reactivation
+
+`amp.createWebhook` registers a stable capability URL for the Orb thread and
+plugin. The URL is a bearer secret: it is written under
+`~/.config/amp/phx-watch-pr/` with owner-only permissions, never logged or put
+in a normal thread message. Payloads only select a repository plus an exact
+watched PR number or current watched head SHA; events that identify neither and
+unrelated status/check events are ignored. All evidence is re-fetched through
+authenticated `gh` calls and payload text is never used as agent instructions.
+
+Webhook delivery is at least once, so Amp event IDs are retained and snapshot
+markers deduplicate effects. A successful dormant watch reacts only to GitHub
+check/status/PR/review events. It acquires a lease and probes for two minutes to
+allow GitHub eventual consistency. No relevant change returns immediately to
+dormant success; changed CI, head, or review state starts a fresh bounded
+active window.
+
+Creating the GitHub repository webhook requires shared administration
+permission, so the plugin never does it automatically. Without external
+configuration, the 15-minute quiet window is the final opportunity to catch a
+comment before the Orb becomes eligible to pause.

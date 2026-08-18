@@ -19,7 +19,7 @@ function filesBelow(directory) {
 }
 
 const artifactPaths = [
-  join(root, 'plugins', 'elixir-phoenix.ts'),
+  ...filesBelow(join(root, 'plugins')),
   ...filesBelow(join(root, 'skills')),
 ].sort()
 
