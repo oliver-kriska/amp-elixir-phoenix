@@ -3,7 +3,7 @@
   "source": "https://github.com/oliver-kriska/claude-elixir-phoenix",
   "files": {
     "plugins/elixir-phoenix.ts": {
-      "sha256": "8c704fa43e60474d8902ce80ea4965e3bd0dfb3fa5df1b58db961cfad978c871",
+      "sha256": "974d037321cd4180a09391dee5726c0266c6b4836c361ce5376e22015e3e1334",
       "executable": false
     },
     "plugins/phx-watch-pr.ts": {
@@ -671,7 +671,7 @@
       "executable": false
     },
     "skills/phx-freeze/SKILL.md": {
-      "sha256": "911e50c9c0f44fa5a52998303f2192cfa6b8ab1141de8109ea43111f362213e1",
+      "sha256": "ffcfbb85e851447f489ae53c5e5a46f01854e9f88f046e88b5e300fbf47eabd8",
       "executable": false
     },
     "skills/phx-full/SKILL.md": {
@@ -723,7 +723,7 @@
       "executable": false
     },
     "skills/phx-investigate/SKILL.md": {
-      "sha256": "d4fe74b6ebce71c828a8f45d8d16542d056cd2cb25ae23ac7113e7fce6485b3a",
+      "sha256": "ccb072d53d211d6f43e60c2e112177f34a3db9d55c84a6e7210a9db3d7354f05",
       "executable": false
     },
     "skills/phx-investigate/references/debug-commands.md": {
@@ -847,7 +847,7 @@
       "executable": false
     },
     "skills/phx-review/SKILL.md": {
-      "sha256": "9ee3711a541661288795e7333cae68cdd8744f1727c07ef890ab898e0c899e5f",
+      "sha256": "5a6dd10d690655e9f0073d5e0697272f9e1cd3ccbacd320fdc2e9a655f6a09b6",
       "executable": false
     },
     "skills/phx-review/references/agent-spawning.md": {
