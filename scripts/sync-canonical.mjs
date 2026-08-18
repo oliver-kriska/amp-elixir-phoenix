@@ -21,6 +21,7 @@ if (!argumentsWithoutFlags[0]) {
 
 const mappings = [
   ['targets/amp/skills', 'skills'],
+  ['targets/amp/plugins/elixir-phoenix.ts', 'plugins/elixir-phoenix.ts'],
   ['targets/amp/plugins/phx-watch-pr.ts', 'plugins/phx-watch-pr.ts'],
   ['scripts/tests/amp_watch_pr_harness.mts', 'scripts/tests/amp_watch_pr_harness.mts'],
 ]
