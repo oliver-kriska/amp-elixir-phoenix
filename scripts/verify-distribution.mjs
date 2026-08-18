@@ -10,6 +10,7 @@ import { parseDocument } from 'yaml'
 const root = resolve(import.meta.dirname, '..')
 const skillsRoot = join(root, 'skills')
 const pluginPath = join(root, 'plugins', 'elixir-phoenix.ts')
+const watcherPath = join(root, 'plugins', 'phx-watch-pr.ts')
 const expectedDistribution =
   '// Distribution: https://github.com/oliver-kriska/amp-elixir-phoenix\n'
 
@@ -70,6 +71,18 @@ check(
 check(!plugin.includes('@amp-plugin'), 'unsupported third-party auto-update directive is present')
 check((plugin.match(/"skillName":/g) ?? []).length === 40, 'expected 40 workflow definitions')
 
+const watcher = readFileSync(watcherPath, 'utf8')
+for (const required of [
+  'executor.keepAlive()',
+  'amp.threads.get(',
+  'amp.createWebhook(',
+  'appendUserMessage(',
+  'waitForResponse(',
+  "name: 'elixir_phoenix_watch_pr'",
+]) {
+  check(watcher.includes(required), `watcher is missing current Amp API behavior: ${required}`)
+}
+
 for (const required of [
   "amp.createAgent",
   "tools: ['Read', 'finder']",
@@ -116,4 +129,4 @@ for (const token of ['${CLAUDE_SKILL_DIR}', '${CLAUDE_PLUGIN_ROOT}']) {
   check(!filesBelow(skillsRoot).some((path) => readFileSync(path).includes(token)), `unresolved token: ${token}`)
 }
 
-console.log('Distribution verification passed: 51 skills, 40 workflows, 1 plugin')
+console.log('Distribution verification passed: 51 skills, 40 workflows, 2 plugins')

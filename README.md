@@ -4,8 +4,8 @@
 
 Deterministic Elixir, Phoenix, LiveView, Ecto, Oban, testing, and security
 workflows for [Amp](https://ampcode.com/). This distribution combines 51 Agent
-Skills with one Amp plugin that exposes explicit command-palette workflows,
-read-only specialists, bounded parallel analysis, and lifecycle safety guards.
+Skills with two Amp plugins: the existing command-palette, specialist, parallel
+analysis, and lifecycle guards plus the native `phx-watch-pr` worker watcher.
 
 This repository is the installable Amp distribution generated from
 [`oliver-kriska/claude-elixir-phoenix`](https://github.com/oliver-kriska/claude-elixir-phoenix),
@@ -22,16 +22,18 @@ amp skill add \
   --target "$PWD/.agents/skills"
 
 mkdir -p .amp/plugins
-plugin=".amp/plugins/elixir-phoenix.ts"
-temporary="$(mktemp "${plugin}.XXXXXX")"
-curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
-  --output "$temporary" && mv "$temporary" "$plugin"
+for name in elixir-phoenix phx-watch-pr; do
+  plugin=".amp/plugins/${name}.ts"
+  temporary="$(mktemp "${plugin}.XXXXXX")"
+  curl --fail --silent --show-error --location \
+    "https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/${name}.ts" \
+    --output "$temporary" && mv "$temporary" "$plugin"
+done
 ```
 
 Project-local installation is recommended because the guidance is intentionally
 opinionated. Decide independently whether your team should commit
-`.agents/skills/` and `.amp/plugins/elixir-phoenix.ts`.
+`.agents/skills/` and the files under `.amp/plugins/`.
 
 ## Install globally
 
@@ -43,11 +45,13 @@ amp skill add \
   --global
 
 mkdir -p "$HOME/.config/amp/plugins"
-plugin="$HOME/.config/amp/plugins/elixir-phoenix.ts"
-temporary="$(mktemp "${plugin}.XXXXXX")"
-curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
-  --output "$temporary" && mv "$temporary" "$plugin"
+for name in elixir-phoenix phx-watch-pr; do
+  plugin="$HOME/.config/amp/plugins/${name}.ts"
+  temporary="$(mktemp "${plugin}.XXXXXX")"
+  curl --fail --silent --show-error --location \
+    "https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/${name}.ts" \
+    --output "$temporary" && mv "$temporary" "$plugin"
+done
 ```
 
 Amp installs global skills under `~/.config/agents/skills/` and system plugins
@@ -69,7 +73,7 @@ amp plugins list
 
 The skill list should include entries such as `phx-investigate`, `phx-review`,
 `testing`, and `liveview-patterns`. The plugin list should include
-`elixir-phoenix.ts`.
+`elixir-phoenix.ts` and `phx-watch-pr.ts`.
 
 Open Amp's command palette with <kbd>Ctrl</kbd>+<kbd>O</kbd>. Choose a workflow
 such as **phx: investigate** or **phx: review**, then send the task in your next
@@ -118,6 +122,21 @@ and use `Promise.allSettled` so one failure does not discard successful work.
 The parent receives the successful evidence and covers only failed concerns
 sequentially.
 
+### Native PR watcher
+
+`phx-watch-pr` keeps the current worker thread alive while required CI and
+actionable review threads are pending, then wakes it only for meaningful
+changes. With `--fix`, it serializes review-fix turns. It never merges or
+deploys. The workflow requires **both** the installed `phx-watch-pr` skill and
+the native `phx-watch-pr.ts` plugin; the skill supplies operating guidance and
+the plugin supplies keep-alive, durable thread, and webhook behavior.
+
+The watcher's stable standalone URL is:
+
+```text
+https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/phx-watch-pr.ts
+```
+
 ### Edit and verification guards
 
 `phx: edit lock` persists an Amp workspace configuration that either freezes
@@ -156,15 +175,17 @@ amp skill add \
   --overwrite
 ```
 
-Use `--global --overwrite` instead for a global skill update. Update a
-project-local plugin by downloading the current file again:
+Use `--global --overwrite` instead for a global skill update. Update the two
+project-local plugins by downloading the current files again:
 
 ```bash
-plugin=".amp/plugins/elixir-phoenix.ts"
-temporary="$(mktemp "${plugin}.XXXXXX")"
-curl --fail --silent --show-error --location \
-  https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/elixir-phoenix.ts \
-  --output "$temporary" && mv "$temporary" "$plugin"
+for name in elixir-phoenix phx-watch-pr; do
+  plugin=".amp/plugins/${name}.ts"
+  temporary="$(mktemp "${plugin}.XXXXXX")"
+  curl --fail --silent --show-error --location \
+    "https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/${name}.ts" \
+    --output "$temporary" && mv "$temporary" "$plugin"
+done
 ```
 
 Use the global output path from the installation section for a global plugin
@@ -175,6 +196,7 @@ Remove a workspace plugin with:
 
 ```bash
 amp plugins remove elixir-phoenix.ts --target workspace
+amp plugins remove phx-watch-pr.ts --target workspace
 ```
 
 Remove package-owned skill directories from `.agents/skills/` individually.
@@ -185,9 +207,19 @@ Do not delete a shared skill root that also contains unrelated skills.
 The repository intentionally contains generated distribution artifacts. Make
 behavior changes in the
 [source repository](https://github.com/oliver-kriska/claude-elixir-phoenix),
-regenerate the Amp target there, and then publish that target here.
-Run `npm run manifest:update` whenever generated plugin or skill artifacts
-change; CI rejects missing, unexpected, modified, or mode-drifted artifacts.
+regenerate the Amp target there, and then sync that target here. Given a local
+canonical checkout, the deterministic command copies all Amp skills, the
+watcher plugin, and its lifecycle harness, records the canonical commit, and
+refreshes the manifest:
+
+```bash
+npm run sync:canonical -- /path/to/claude-elixir-phoenix
+npm run sync:canonical:check -- /path/to/claude-elixir-phoenix
+# --dry-run is an alias for --check and does not modify files
+```
+
+Run `npm run manifest:update` only for independent wrapper artifact changes.
+CI rejects missing, unexpected, modified, or mode-drifted distribution files.
 
 Local verification does not invoke paid models:
 
@@ -196,13 +228,21 @@ npm ci
 npm test
 ```
 
-CI validates the exact manifest for all 51 skills and bundled resources, type-checks
-the plugin against `@ampcode/plugin`, exercises command/specialist/lock/gate
-behavior, lints Markdown, audits dependencies, and loads the plugin with the
-latest Amp CLI. Only a green push to `main` promotes the exact validated commit
-to the `stable` distribution branch; a final delivery job compares that
-promoted raw artifact with the validated plugin. Failed commits on `main` are
-never exposed through the documented installation URLs.
+CI validates the exact manifest for all 51 skills and bundled resources,
+type-checks both plugins against `@ampcode/plugin`, exercises the legacy plugin
+and the watcher's model-free lifecycle harness, lints Markdown, audits
+dependencies, and loads both plugins with the latest Amp CLI. Only a green push
+to `main` promotes the exact validated commit to the `stable` distribution
+branch; a final delivery job compares both promoted raw artifacts with their
+validated files. Failed commits on `main` are never exposed through the
+documented installation URLs.
+
+A conservative daily/manual workflow checks canonical `main` and opens or
+updates the single `automation/sync-canonical-amp` PR only when generated files
+change. It never merges or pushes to wrapper `main`/`stable`; the existing main
+CI remains the promotion authority. Repository Actions must be permitted to
+create pull requests (Settings → Actions → General → Workflow permissions).
+That permission is the only external setup required.
 
 ## License
 

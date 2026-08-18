@@ -52,12 +52,16 @@ jobs:
       - name: Install Amp
         run: curl -fsSL https://ampcode.com/install.sh | bash
 
-      - name: Load plugin without model calls
+      - name: Load plugins without model calls
         run: |
           "$HOME/.amp/bin/amp" plugins exec \
             plugins/elixir-phoenix.ts \
             agent.start \
             --data '{"thread":{"id":"T-00000000-0000-0000-0000-000000000000"},"message":"native load smoke","id":"native-load"}'
+          "$HOME/.amp/bin/amp" plugins exec \
+            plugins/phx-watch-pr.ts \
+            agent.start \
+            --data '{"thread":{"id":"T-00000000-0000-0000-0000-000000000000"},"message":"watcher load smoke","id":"watcher-load"}'
 
   promote:
     name: Promote validated distribution
@@ -104,7 +108,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Compare the published artifact
+      - name: Compare the published artifacts
         run: |
           stable_sha="$(git ls-remote --exit-code origin refs/heads/stable | awk '{print $1}')"
           if [ "$stable_sha" != "$GITHUB_SHA" ]; then
@@ -112,7 +116,9 @@ jobs:
             exit 1
           fi
 
-          raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${stable_sha}/plugins/elixir-phoenix.ts"
-          curl --fail --silent --show-error --location \
-            --retry 5 --retry-all-errors \
-            "$raw_url" | cmp - plugins/elixir-phoenix.ts
+          for plugin in elixir-phoenix.ts phx-watch-pr.ts; do
+            raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${stable_sha}/plugins/${plugin}"
+            curl --fail --silent --show-error --location \
+              --retry 5 --retry-all-errors \
+              "$raw_url" | cmp - "plugins/${plugin}"
+          done
