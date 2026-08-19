@@ -11,33 +11,23 @@ This repository is the installable Amp distribution generated from
 [`oliver-kriska/claude-elixir-phoenix`](https://github.com/oliver-kriska/claude-elixir-phoenix),
 which remains the canonical source and contribution repository.
 
-## Install in one project
+## Managed Amp-hosted distribution
 
-Run these commands from the Elixir/Phoenix project where Amp should use the
-workflows:
+The maintained installation target is the owner's Amp-hosted **User Skills**
+and **User Plugins** repositories. Amp makes those artifacts available in every
+new thread and Orb independently of the application checkout. Existing sessions
+can reload them without reinstalling files.
 
-```bash
-amp skill add \
-  https://github.com/oliver-kriska/amp-elixir-phoenix/tree/stable/skills \
-  --target "$PWD/.agents/skills"
+Application repositories do not own this distribution. In particular, Enaia
+and similar applications must not copy these skills or plugins into
+`.agents/skills/` or `.amp/plugins/`, pin this wrapper, or run an app-local
+updater. The wrapper publishes the validated `stable` revision once per day;
+see [Amp-hosted publishing](docs/amp-hosted-publishing.md).
 
-mkdir -p .amp/plugins
-for name in elixir-phoenix phx-watch-pr; do
-  plugin=".amp/plugins/${name}.ts"
-  temporary="$(mktemp "${plugin}.XXXXXX")"
-  curl --fail --silent --show-error --location \
-    "https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/${name}.ts" \
-    --output "$temporary" && mv "$temporary" "$plugin"
-done
-```
+## Public installation for other Amp users
 
-Project-local installation is recommended because the guidance is intentionally
-opinionated. Decide independently whether your team should commit
-`.agents/skills/` and the files under `.amp/plugins/`.
-
-## Install globally
-
-Use a global installation only when most of your Amp work is Elixir/Phoenix:
+Users who do not receive the owner's Amp-hosted repositories can install the
+public `stable` distribution globally on one machine:
 
 ```bash
 amp skill add \
@@ -166,41 +156,31 @@ gate. `mix format --check-formatted` is a check; plain `mix format` is not.
 
 ## Update or remove
 
-Skills are copied at installation time. Update them explicitly:
+The owner's Amp-hosted installation is updated only by this wrapper's publisher.
+Application repositories have nothing to update or remove. A new Amp thread
+loads the hosted revision automatically; reload skills and plugins in an
+existing session when an immediate refresh is needed.
+
+The public one-machine installation is copied at installation time. Update its
+skills explicitly, then download the plugins again with the loop from the
+installation section:
 
 ```bash
 amp skill add \
   https://github.com/oliver-kriska/amp-elixir-phoenix/tree/stable/skills \
-  --target "$PWD/.agents/skills" \
+  --global \
   --overwrite
 ```
 
-Use `--global --overwrite` instead for a global skill update. Update the two
-project-local plugins by downloading the current files again:
+Remove the one-machine plugins with:
 
 ```bash
-for name in elixir-phoenix phx-watch-pr; do
-  plugin=".amp/plugins/${name}.ts"
-  temporary="$(mktemp "${plugin}.XXXXXX")"
-  curl --fail --silent --show-error --location \
-    "https://raw.githubusercontent.com/oliver-kriska/amp-elixir-phoenix/stable/plugins/${name}.ts" \
-    --output "$temporary" && mv "$temporary" "$plugin"
-done
+rm "$HOME/.config/amp/plugins/elixir-phoenix.ts"
+rm "$HOME/.config/amp/plugins/phx-watch-pr.ts"
 ```
 
-Use the global output path from the installation section for a global plugin
-update. Native third-party auto-update can replace this manual step if Amp
-opens that capability in the future.
-
-Remove a workspace plugin with:
-
-```bash
-amp plugins remove elixir-phoenix.ts --target workspace
-amp plugins remove phx-watch-pr.ts --target workspace
-```
-
-Remove package-owned skill directories from `.agents/skills/` individually.
-Do not delete a shared skill root that also contains unrelated skills.
+Remove globally copied skill directories individually from
+`~/.config/agents/skills/`; do not delete that shared root.
 
 ## Development and delivery
 
@@ -242,7 +222,12 @@ updates the single `automation/sync-canonical-amp` PR only when generated files
 change. It never merges or pushes to wrapper `main`/`stable`; the existing main
 CI remains the promotion authority. Repository Actions must be permitted to
 create pull requests (Settings → Actions → General → Workflow permissions).
-That permission is the only external setup required.
+
+A separate daily/manual workflow publishes the already validated `stable`
+revision to Amp-hosted User repositories, skills first and plugins second. It
+requires an `AMP_PUBLISH_API_KEY` Actions secret and never writes this GitHub
+repository. See the [operator guide](docs/amp-hosted-publishing.md) for local
+review, ownership, failure, and recovery behavior.
 
 ## License
 
