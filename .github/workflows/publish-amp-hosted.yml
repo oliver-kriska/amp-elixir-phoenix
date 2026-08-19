@@ -1,0 +1,65 @@
+name: Publish Amp-hosted user distribution
+
+on:
+  schedule:
+    - cron: "41 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-amp-hosted-user-distribution
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish validated stable artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout the validated distribution
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: stable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify the stable distribution
+        run: npm test
+
+      - name: Install Amp
+        run: curl -fsSL https://ampcode.com/install.sh | bash
+
+      - name: Clone Amp-hosted user repositories
+        env:
+          AMP_API_KEY: ${{ secrets.AMP_PUBLISH_API_KEY }}
+          AMP_SKIP_UPDATE_CHECK: "1"
+        run: |
+          if [ -z "$AMP_API_KEY" ]; then
+            echo "AMP_PUBLISH_API_KEY is not configured" >&2
+            exit 1
+          fi
+          mkdir hosted
+          "$HOME/.amp/bin/amp" clone user-skills "$GITHUB_WORKSPACE/hosted/skills"
+          "$HOME/.amp/bin/amp" clone user-plugins "$GITHUB_WORKSPACE/hosted/plugins"
+
+      - name: Publish skills, then plugins
+        env:
+          AMP_API_KEY: ${{ secrets.AMP_PUBLISH_API_KEY }}
+          AMP_SKIP_UPDATE_CHECK: "1"
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm run hosted:publish -- \
+            --skills-repository "$GITHUB_WORKSPACE/hosted/skills" \
+            --plugins-repository "$GITHUB_WORKSPACE/hosted/plugins" \
+            --push

@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Elixir and Phoenix workflow skills, palette commands, and specialists for Amp",
   "scripts": {
-    "lint": "markdownlint \"README.md\" \"skills/**/*.md\"",
+    "hosted:publish": "node scripts/publish-amp-hosted.mjs",
+    "lint": "markdownlint \"README.md\" \"docs/**/*.md\" \"skills/**/*.md\"",
     "manifest:check": "node scripts/generate-manifest.mjs --check",
     "manifest:update": "node scripts/generate-manifest.mjs",
     "sync:canonical": "node scripts/sync-canonical.mjs",
@@ -13,8 +14,9 @@
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/verify-distribution.mjs",
     "test:plugin": "tsx scripts/plugin-harness.ts plugins/elixir-phoenix.ts skills",
+    "test:publisher": "node --test scripts/tests/publish-amp-hosted.test.mjs",
     "test:watcher": "tsx scripts/tests/amp_watch_pr_harness.mts plugins/phx-watch-pr.ts .",
-    "test": "npm run manifest:check && npm run verify && npm run typecheck && npm run test:plugin && npm run test:watcher && npm run lint"
+    "test": "npm run manifest:check && npm run verify && npm run typecheck && npm run test:plugin && npm run test:watcher && npm run test:publisher && npm run lint"
   },
   "devDependencies": {
     "@ampcode/plugin": "0.0.0-20260818001058-gcb0a91a",
