@@ -1,8 +1,8 @@
 ---
 name: phx-perf
-description: Analyze Elixir/Phoenix performance — N+1 queries, assign bloat, ecto
-  optimization, genserver bottlenecks. Use when slowness, timeouts, or high memory
-  reported.
+description: 'Use when anything in a Phoenix app is slow, times out, or uses too much
+  memory, even if the cause looks obvious. Load it before analyzing or fixing: it
+  runs measured Ecto, LiveView and OTP checks and ranks fixes.'
 ---
 
 # Performance Analysis

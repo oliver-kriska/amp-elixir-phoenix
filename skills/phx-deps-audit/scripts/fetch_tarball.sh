@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# corpus.d/fetch.sh — fetch real Hex tarballs into the local cache for
-# calibration runs. NOT executed by default `runner.sh` (those fixtures
-# are deliberately offline). Invoked manually or by the LLM-triage and
-# benign-FP-corpus targets.
+# scripts/fetch_tarball.sh — fetch real Hex tarballs into the local cache.
+# Used by /phx:deps-vet (single-vet) and by calibration runs against the
+# benign corpus; the offline smoke fixtures never call it.
 #
 # Usage:
-#   bash smoke-test/corpus.d/fetch.sh phoenix 1.7.21
-#   bash smoke-test/corpus.d/fetch.sh --batch corpus.d/batch.txt
-#   bash smoke-test/corpus.d/fetch.sh --prune  # drop tarballs >30 days old
+#   bash scripts/fetch_tarball.sh phoenix 1.7.21
+#   bash scripts/fetch_tarball.sh --batch batch.txt   # "<pkg> <version>" per line
+#   bash scripts/fetch_tarball.sh --prune  # drop tarballs >30 days old
 #
 # Cache layout:
 #   ${AUDIT_TMPDIR}/corpus/<pkg>/<version>/
@@ -79,7 +78,7 @@ main() {
       done < "$2"
       ;;
     '')
-      fail "usage: fetch.sh <pkg> <version> | --batch <file> | --prune"
+      fail "usage: fetch_tarball.sh <pkg> <version> | --batch <file> | --prune"
       ;;
     *)
       [ -n "${2:-}" ] || fail "version required"
