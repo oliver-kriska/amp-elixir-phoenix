@@ -2,23 +2,58 @@ import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import {
   chmodSync,
+  cpSync,
   existsSync,
   lstatSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
   readdirSync,
+  realpathSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, relative, resolve } from 'node:path'
-import { afterEach, test } from 'node:test'
+import { after, afterEach, before, test } from 'node:test'
 
-const root = resolve(import.meta.dirname, '../..')
-const publisher = join(root, 'scripts/publish-amp-hosted.mjs')
+const wrapperRoot = resolve(import.meta.dirname, '../..')
 const markerName = '.phxagents-managed.json'
 const temporaryDirectories = []
+let root
+let publisher
+
+// The publisher refuses a payload that differs from HEAD, and the daily
+// canonical sync runs these tests before it commits the refreshed payload.
+// Publishing from a committed copy keeps the tests independent of the
+// checkout's state.
+function createWrapperFixture() {
+  // The publisher only runs main() when argv[1] is its real path.
+  const fixture = realpathSync(mkdtempSync(join(tmpdir(), 'phxagents-wrapper-')))
+  const payload = ['canonical-commit.txt', 'distribution-manifest.json', 'plugins', 'skills']
+  const scripts = ['generate-manifest.mjs', 'publish-amp-hosted.mjs', 'verify-distribution.mjs']
+  for (const path of [...payload, ...scripts.map((script) => join('scripts', script))]) {
+    cpSync(join(wrapperRoot, path), join(fixture, path), { recursive: true })
+  }
+  mkdirSync(join(fixture, 'node_modules'))
+  symlinkSync(join(wrapperRoot, 'node_modules/yaml'), join(fixture, 'node_modules/yaml'))
+  command('git', ['init', '--initial-branch=main', fixture])
+  git(fixture, 'config', 'user.name', 'Publisher Test')
+  git(fixture, 'config', 'user.email', 'publisher@example.com')
+  git(fixture, 'add', ...payload, 'scripts')
+  git(fixture, 'commit', '-m', 'wrapper fixture')
+  return fixture
+}
+
+before(() => {
+  root = createWrapperFixture()
+  publisher = join(root, 'scripts/publish-amp-hosted.mjs')
+})
+
+after(() => {
+  rmSync(root, { recursive: true, force: true })
+})
 
 afterEach(() => {
   for (const directory of temporaryDirectories.splice(0)) {
@@ -254,4 +289,29 @@ test('invalid plugin ownership metadata fails before skills are modified', () =>
   assert.match(result.stderr, /unsafe managed entry/)
   assert.equal(git(skills.checkout, 'rev-parse', 'HEAD'), skillHead)
   assert.equal(git(skills.checkout, 'status', '--porcelain=v1'), '')
+})
+
+test('an uncommitted distribution payload fails before hosted repositories are modified', () => {
+  const base = temporaryDirectory()
+  const skills = createHostedRepository(base, 'skills')
+  const plugins = createHostedRepository(base, 'plugins')
+  const heads = {
+    skills: git(skills.checkout, 'rev-parse', 'HEAD'),
+    plugins: git(plugins.checkout, 'rev-parse', 'HEAD'),
+  }
+  const skill = join(root, 'skills/phx-plan/SKILL.md')
+  const original = readFileSync(skill)
+  writeFileSync(skill, Buffer.concat([original, Buffer.from('uncommitted\n')]))
+
+  try {
+    const result = runPublisher(skills.checkout, plugins.checkout)
+    assert.notEqual(result.status, 0)
+    assert.match(result.stderr, /distribution payload differs from the wrapper HEAD/)
+  } finally {
+    writeFileSync(skill, original)
+  }
+  assert.equal(git(skills.checkout, 'rev-parse', 'HEAD'), heads.skills)
+  assert.equal(git(plugins.checkout, 'rev-parse', 'HEAD'), heads.plugins)
+  assert.equal(git(skills.checkout, 'status', '--porcelain=v1'), '')
+  assert.equal(git(plugins.checkout, 'status', '--porcelain=v1'), '')
 })
