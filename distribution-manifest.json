@@ -11,7 +11,7 @@
       "executable": false
     },
     "skills/ash-framework/SKILL.md": {
-      "sha256": "554fd3624382812563a0ad909e4a643b3443479c4ea570eae843cd0b95540cef",
+      "sha256": "cdec001cd42dd081bdd27a9d26c3e845ec6bec80c71c78c89996d50982eb81a3",
       "executable": false
     },
     "skills/compound-docs/SKILL.md": {
@@ -367,7 +367,7 @@
       "executable": false
     },
     "skills/phx-deps-audit/references/skill-checklist.md": {
-      "sha256": "924818ae5e34c48ebd7e8ae8b1079ccafe0ba6ccaee897faedaf316fd97017f5",
+      "sha256": "d5b3439d9711813c2ae54c0156d5849abeaac34fefbe168858d8da1eb9490d75",
       "executable": false
     },
     "skills/phx-deps-audit/references/tarball-fetcher.md": {
