@@ -4,12 +4,19 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: Exact generated sync commit to validate without promotion
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ inputs.ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -21,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.ref || github.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -48,6 +57,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.ref || github.sha }}
 
       - name: Install Amp
         run: curl -fsSL https://ampcode.com/install.sh | bash
@@ -65,7 +76,9 @@ jobs:
 
   promote:
     name: Promote validated distribution
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: >-
+      !inputs.ref && github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: [quality, amp-runtime]
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -99,7 +112,6 @@ jobs:
 
   publish-check:
     name: Verify promoted raw plugin
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [promote]
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -122,3 +134,17 @@ jobs:
               --retry 5 --retry-all-errors \
               "$raw_url" | cmp - "plugins/${plugin}"
           done
+
+  publish:
+    name: Start Amp-hosted publication
+    needs: [publish-check]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch the stable publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run publish-amp-hosted.yml --ref main

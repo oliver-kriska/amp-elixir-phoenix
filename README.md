@@ -211,21 +211,30 @@ npm test
 CI validates the exact manifest for all 51 skills and bundled resources,
 type-checks both plugins against `@ampcode/plugin`, exercises the legacy plugin
 and the watcher's model-free lifecycle harness, lints Markdown, audits
-dependencies, and loads both plugins with the latest Amp CLI. Only a green push
-to `main` promotes the exact validated commit to the `stable` distribution
-branch; a final delivery job compares both promoted raw artifacts with their
-validated files. Failed commits on `main` are never exposed through the
-documented installation URLs.
+dependencies, and loads both plugins with the latest Amp CLI. Only successful
+push or explicitly dispatched CI on `main` promotes the exact validated commit
+to the `stable` distribution branch. A delivery job compares both promoted raw
+artifacts with their validated files before starting Amp-hosted publication.
+Failed commits on `main` are never exposed through the documented installation
+URLs.
 
-A conservative daily/manual workflow checks canonical `main` and opens or
-updates the single `automation/sync-canonical-amp` PR only when generated files
-change. It never merges or pushes to wrapper `main`/`stable`; the existing main
-CI remains the promotion authority. Repository Actions must be permitted to
-create pull requests (Settings → Actions → General → Workflow permissions).
+The daily/manual sync workflow checks canonical `main` and opens or updates the
+single `automation/sync-canonical-amp` PR when generated files change. It calls
+the full reusable CI directly against that exact commit, then automatically
+squash-merges it only if validation succeeds and the PR head and wrapper base
+are still current. Other PRs are never auto-merged. Main CI validates the merged
+revision again before promotion and publication.
 
-A separate daily/manual workflow publishes the already validated `stable`
-revision to Amp-hosted User repositories, skills first and plugins second. It
-requires an `AMP_PUBLISH_API_KEY` Actions secret and never writes this GitHub
+Workflow dispatches explicitly connect bot merges to main CI and promotion to
+publication; they do not rely on `GITHUB_TOKEN` triggering push or PR workflows.
+No PAT, GitHub App, repository-wide auto-merge setting, or routine manual
+approval is needed. Repository Actions must still be permitted to create pull
+requests (Settings → Actions → General → Workflow permissions). A failed check
+blocks delivery; later syncs retry main CI even when there are no new artifacts.
+
+The publisher delivers validated `stable` to Amp-hosted User repositories,
+skills first and plugins second, after main CI and on a daily recovery schedule.
+It requires an `AMP_PUBLISH_API_KEY` Actions secret and never writes this GitHub
 repository. See the [operator guide](docs/amp-hosted-publishing.md) for local
 review, ownership, failure, and recovery behavior.
 
