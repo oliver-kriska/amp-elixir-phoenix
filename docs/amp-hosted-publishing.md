@@ -5,15 +5,16 @@ maintainer's Amp-hosted **User Skills** and **User Plugins** repositories.
 Application repositories do not install, pin, update, or remove these artifacts.
 
 ```text
-canonical main → wrapper main CI → wrapper stable
-                                      │
-                                      ├─▶ User Skills
-                                      └─▶ User Plugins
+canonical main → sync PR → full CI → automatic merge → main CI → stable
+                                                                  │
+                                                                  ├─▶ User Skills
+                                                                  └─▶ User Plugins
 ```
 
 Amp loads personal repository artifacts in new threads and Orbs. Existing
 sessions must reload skills and plugins to pick up a publication immediately.
-The daily workflow keeps normal freshness within one day.
+Canonical changes are checked daily. Successful main CI starts publication
+immediately; a separate daily publication schedule also retries delivery.
 
 ## Safety and ownership
 
@@ -99,10 +100,18 @@ performs no pushes.
 
 ## Scheduled and manual GitHub workflow
 
-`.github/workflows/publish-amp-hosted.yml` runs daily at 07:41 UTC and supports
-`workflow_dispatch`. It is bounded to 15 minutes, checks out `stable`, runs the
-full test suite, installs the current Amp CLI, clones both hosted repositories,
-and invokes the publisher with `--push`.
+`.github/workflows/sync-canonical.yml` runs daily at 06:23 UTC and supports manual
+dispatch on `main`. It rebuilds the single generated sync PR, calls reusable CI
+at the exact head SHA, and merges only after both quality and Amp runtime checks
+pass. A changed PR head or wrapper base blocks the merge until the next sync.
+The merge step explicitly dispatches main CI because `GITHUB_TOKEN` merges do
+not trigger push workflows. Main CI revalidates the merged revision, promotes
+`stable`, verifies raw delivery, and explicitly dispatches the publisher.
+
+`.github/workflows/publish-amp-hosted.yml` also runs daily at 07:41 UTC as a
+recovery path and supports manual `workflow_dispatch`. It is bounded to 15
+minutes, checks out `stable`, runs the full test suite, installs the current Amp
+CLI, clones both hosted repositories, and invokes the publisher with `--push`.
 
 Create a repository Actions secret named `AMP_PUBLISH_API_KEY`. Its value must
 be an Amp access token from **Personal Settings → Security** for the owner of the
@@ -116,6 +125,12 @@ secret, or Enaia workflow is required. The workflow does not merge, deploy, or
 change wrapper branches.
 
 ## Failure and recovery
+
+Failed sync validation leaves its PR open and does not merge or publish the
+candidate. The next sync rebuilds from current wrapper and canonical `main`.
+Even a no-change sync dispatches main CI, recovering from a previous interrupted
+dispatch or failed promotion without requiring another canonical change.
+To retry immediately, run **Sync canonical Amp artifacts** on `main`.
 
 Both target repositories are validated before any managed file changes. During
 publication:
