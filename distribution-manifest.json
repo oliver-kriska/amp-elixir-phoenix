@@ -271,11 +271,11 @@
       "executable": false
     },
     "skills/phx-codex-loop/SKILL.md": {
-      "sha256": "3342ff32ae7d6aa9f42bb5db96546aacc8845220ad5cd5b3ed6e2af375f2f8e9",
+      "sha256": "51af03eefaff92ae9855b687777635d48378ce0857ac06635b0f9a3973d596c6",
       "executable": false
     },
     "skills/phx-codex-loop/references/codex-cli.md": {
-      "sha256": "2b3225810cafbcfa5d0c89724b2895c38e47f6f1a221fc5e5d086b149645769f",
+      "sha256": "0fe1f899aedf10f72661425bc25d09a0275da1e42eeb433df4283f8e4ff4274a",
       "executable": false
     },
     "skills/phx-compound/SKILL.md": {
