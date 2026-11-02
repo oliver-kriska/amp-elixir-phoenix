@@ -118,6 +118,48 @@ Each added line is one `<pkg>: <version>` pair; block if any added
 pair is missing from `audits`. Re-locks of already-locked unvetted
 pkgs are ignored — those are pre-existing tech debt, not new risk.
 
+### Non-Hex dep pins
+
+`git:`, `github:` and `path:` deps have no Hex version, so their audit entry
+stores a **pin** in `version`. The `deps-audit-gate.sh` hook (rule 5) builds
+the same pin from the `mix.exs` tuple and clears a new non-Hex dep only when
+an uncommented entry has the matching `package` and the exact `version`:
+
+```text
+<kind>:<source>[@<refkind>:<ref>]
+
+{:my_dep, github: "org/repo", tag: "v1.0"}        → github:org/repo@tag:v1.0
+{:my_dep, git: "https://h/r.git", ref: "abc123"}  → git:https://h/r.git@ref:abc123
+{:my_dep, git: "https://h/r.git", branch: "main"} → git:https://h/r.git@branch:main
+{:my_dep, path: "../my_dep"}                      → path:../my_dep
+```
+
+```elixir
+%{
+  package: "my_dep",
+  version: "github:org/repo@tag:v1.0",
+  criteria: :safe_to_deploy,
+  reviewer: "oliver@ideax.sk",
+  notes: "Our own repository; reviewed at v1.0.",
+  reviewed_at: ~D[2026-11-02]
+}
+```
+
+The block message prints the exact `phx-deps-vet <dep> <pin>` command, so
+the pin never has to be typed by hand. Changing the tag or ref makes a new
+pin, which needs a new vet (lock-wins, as for Hex versions). A `branch:`, a
+tuple with no ref, and a `path:` all point at mutable content: the entry
+records that someone accepted the dep, not that its current code was
+reviewed. Prefer `tag:` or `ref:` for deps you vet. When `mix deps.update`
+moves a branch-pinned dep, the hook allows it but tells Claude which commit
+`mix.lock` held, so the new commits can be reviewed.
+
+`mix igniter.install my_dep@github:org/repo` is judged before igniter writes
+the tuple, so its pin is the argument after `my_dep@`: `github:org/repo`.
+
+Pins containing `#` can't be matched, because the hook strips `#` comments
+before matching (fail closed).
+
 ### Criteria atoms
 
 Following cargo-vet's vocabulary, three Phase 2 criteria are

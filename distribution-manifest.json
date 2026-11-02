@@ -3,7 +3,7 @@
   "source": "https://github.com/oliver-kriska/claude-elixir-phoenix",
   "files": {
     "plugins/elixir-phoenix.ts": {
-      "sha256": "dda89e0c7230eb8855b37c863cda48f7655bf264f7574eccba1ed1e29d05583c",
+      "sha256": "4ef9f9d1a2f09300381858722e5ada3b3b98b3d9b39b3660f0755845df49428c",
       "executable": false
     },
     "plugins/phx-watch-pr.ts": {
@@ -287,7 +287,7 @@
       "executable": false
     },
     "skills/phx-deps-audit/SKILL.md": {
-      "sha256": "e3544a73a0282794a3d0763642954e649df2c4b6e3d077ca56b41c4fd653984d",
+      "sha256": "b2d99e4c67c3462401b1b51a2c40840457f95b9ba2c0676523be8cddcc5d43b4",
       "executable": false
     },
     "skills/phx-deps-audit/priv/semgrep/elixir-supply-chain.yaml": {
@@ -339,7 +339,7 @@
       "executable": false
     },
     "skills/phx-deps-audit/references/hook.md": {
-      "sha256": "3f1daa5f755dd3d511ad196fbe7c4915c7ce6fdf61229e048f1b0219eb2ad613",
+      "sha256": "534919d33a3a41260eeb83c349767afb62d03b75e8b62fc20b05a3aad2664bd7",
       "executable": false
     },
     "skills/phx-deps-audit/references/llm-triage.md": {
@@ -351,7 +351,7 @@
       "executable": false
     },
     "skills/phx-deps-audit/references/output-renderer.md": {
-      "sha256": "16c9e424f115519c46a74eb420c6699a54c2010cca696713851d059db0cfbf55",
+      "sha256": "5013f69b6428d136c319a65eabdca823ef9b16ed6e04ec7d0e20d68d661fbce5",
       "executable": false
     },
     "skills/phx-deps-audit/references/rules-impl.md": {
@@ -423,7 +423,7 @@
       "executable": false
     },
     "skills/phx-deps-vet/SKILL.md": {
-      "sha256": "5d74d8009345cdca274ed67d8573f229b5138c354ddc1b5ac49dc1b6e0e93a33",
+      "sha256": "f9358c2581d2682316f9fed9aec2a31f2ed6993b46d06abdb32363babb9e7bd9",
       "executable": false
     },
     "skills/phx-deps-vet/priv/hex_vet_seed.exs": {
@@ -431,7 +431,7 @@
       "executable": false
     },
     "skills/phx-deps-vet/references/hex-vet.md": {
-      "sha256": "0eef2bcb5a73d03565132651949558ef668a223e67031ef2660da1c86fedeba0",
+      "sha256": "443fd86421b030321d1289c67a4a4286a82d667e596a96d8d07e560d5587392b",
       "executable": false
     },
     "skills/phx-deps-vet/references/seed.md": {
